@@ -1,0 +1,14 @@
+function mergesort(table1,table2)
+    tmp = merge(table1, table2)
+    return sort(tmp)
+end
+
+function main()
+    x = read_file("sample1.arff")
+    y = read_file("sample2.arff")
+    tmp = mergesort(x,y)
+    tmp = sample(20,tmp)
+    write_file(tmp, "out.arff")
+    select (:age <= 5) from x
+    filter (:age > 5) from y
+end

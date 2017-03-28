@@ -1,0 +1,15 @@
+function main()
+    tmp = read_file("sample1.arff")
+    i = 0
+    j = 0
+    nrows = numRows(tmp)
+    ncols = numCols(tmp)
+    while (i < nrows)
+        while (j < ncols)
+            # Si los tipos no concuerdan activa una excepcion de tipos
+            tmp[i,j] = false
+            j = j + 1
+        end
+        i = i + 1
+    end
+end

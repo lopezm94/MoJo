@@ -1,0 +1,148 @@
+digraph {
+
+	ordering=out;
+	ranksep=.4;
+	bgcolor="lightgrey"; node [shape=box, fixedsize=false, fontsize=12, fontname="Helvetica-bold", fontcolor="blue"
+		width=.25, height=.25, color="black", fillcolor="white", style="filled, solid, bold"];
+	edge [arrowsize=.5, color="black", style="bold"]
+
+  n0 [label="LIST_FUNCTIONS"];
+  n1 [label="function"];
+  n1 [label="function"];
+  n2 [label="main"];
+  n3 [label="PARAMS"];
+  n4 [label="LIST_INSTR"];
+  n4 [label="LIST_INSTR"];
+  n5 [label=":="];
+  n5 [label=":="];
+  n6 [label="tmp"];
+  n7 [label="FUNCALL"];
+  n7 [label="FUNCALL"];
+  n8 [label="read_file"];
+  n9 [label="ARGLIST"];
+  n9 [label="ARGLIST"];
+  n10 [label="\"sample1.arff\""];
+  n11 [label=":="];
+  n11 [label=":="];
+  n12 [label="i"];
+  n13 [label="0"];
+  n14 [label=":="];
+  n14 [label=":="];
+  n15 [label="j"];
+  n16 [label="0"];
+  n17 [label=":="];
+  n17 [label=":="];
+  n18 [label="nrows"];
+  n19 [label="FUNCALL"];
+  n19 [label="FUNCALL"];
+  n20 [label="numRows"];
+  n21 [label="ARGLIST"];
+  n21 [label="ARGLIST"];
+  n22 [label="tmp"];
+  n23 [label=":="];
+  n23 [label=":="];
+  n24 [label="ncols"];
+  n25 [label="FUNCALL"];
+  n25 [label="FUNCALL"];
+  n26 [label="numCols"];
+  n27 [label="ARGLIST"];
+  n27 [label="ARGLIST"];
+  n28 [label="tmp"];
+  n29 [label="while"];
+  n29 [label="while"];
+  n30 [label="<"];
+  n30 [label="<"];
+  n31 [label="i"];
+  n32 [label="nrows"];
+  n33 [label="LIST_INSTR"];
+  n33 [label="LIST_INSTR"];
+  n34 [label="while"];
+  n34 [label="while"];
+  n35 [label="<"];
+  n35 [label="<"];
+  n36 [label="j"];
+  n37 [label="ncols"];
+  n38 [label="LIST_INSTR"];
+  n38 [label="LIST_INSTR"];
+  n39 [label=":="];
+  n39 [label=":="];
+  n40 [label="ACCESS"];
+  n40 [label="ACCESS"];
+  n41 [label="tmp"];
+  n42 [label="ARGLIST"];
+  n42 [label="ARGLIST"];
+  n43 [label="i"];
+  n44 [label="j"];
+  n45 [label="false"];
+  n46 [label=":="];
+  n46 [label=":="];
+  n47 [label="j"];
+  n48 [label="+"];
+  n48 [label="+"];
+  n49 [label="j"];
+  n50 [label="1"];
+  n51 [label=":="];
+  n51 [label=":="];
+  n52 [label="i"];
+  n53 [label="+"];
+  n53 [label="+"];
+  n54 [label="i"];
+  n55 [label="1"];
+
+  n0 -> n1 // "LIST_FUNCTIONS" -> "function"
+  n1 -> n2 // "function" -> "main"
+  n1 -> n3 // "function" -> "PARAMS"
+  n1 -> n4 // "function" -> "LIST_INSTR"
+  n4 -> n5 // "LIST_INSTR" -> ":="
+  n5 -> n6 // ":=" -> "tmp"
+  n5 -> n7 // ":=" -> "FUNCALL"
+  n7 -> n8 // "FUNCALL" -> "read_file"
+  n7 -> n9 // "FUNCALL" -> "ARGLIST"
+  n9 -> n10 // "ARGLIST" -> "\"sample1.arff\""
+  n4 -> n11 // "LIST_INSTR" -> ":="
+  n11 -> n12 // ":=" -> "i"
+  n11 -> n13 // ":=" -> "0"
+  n4 -> n14 // "LIST_INSTR" -> ":="
+  n14 -> n15 // ":=" -> "j"
+  n14 -> n16 // ":=" -> "0"
+  n4 -> n17 // "LIST_INSTR" -> ":="
+  n17 -> n18 // ":=" -> "nrows"
+  n17 -> n19 // ":=" -> "FUNCALL"
+  n19 -> n20 // "FUNCALL" -> "numRows"
+  n19 -> n21 // "FUNCALL" -> "ARGLIST"
+  n21 -> n22 // "ARGLIST" -> "tmp"
+  n4 -> n23 // "LIST_INSTR" -> ":="
+  n23 -> n24 // ":=" -> "ncols"
+  n23 -> n25 // ":=" -> "FUNCALL"
+  n25 -> n26 // "FUNCALL" -> "numCols"
+  n25 -> n27 // "FUNCALL" -> "ARGLIST"
+  n27 -> n28 // "ARGLIST" -> "tmp"
+  n4 -> n29 // "LIST_INSTR" -> "while"
+  n29 -> n30 // "while" -> "<"
+  n30 -> n31 // "<" -> "i"
+  n30 -> n32 // "<" -> "nrows"
+  n29 -> n33 // "while" -> "LIST_INSTR"
+  n33 -> n34 // "LIST_INSTR" -> "while"
+  n34 -> n35 // "while" -> "<"
+  n35 -> n36 // "<" -> "j"
+  n35 -> n37 // "<" -> "ncols"
+  n34 -> n38 // "while" -> "LIST_INSTR"
+  n38 -> n39 // "LIST_INSTR" -> ":="
+  n39 -> n40 // ":=" -> "ACCESS"
+  n40 -> n41 // "ACCESS" -> "tmp"
+  n40 -> n42 // "ACCESS" -> "ARGLIST"
+  n42 -> n43 // "ARGLIST" -> "i"
+  n42 -> n44 // "ARGLIST" -> "j"
+  n39 -> n45 // ":=" -> "false"
+  n38 -> n46 // "LIST_INSTR" -> ":="
+  n46 -> n47 // ":=" -> "j"
+  n46 -> n48 // ":=" -> "+"
+  n48 -> n49 // "+" -> "j"
+  n48 -> n50 // "+" -> "1"
+  n33 -> n51 // "LIST_INSTR" -> ":="
+  n51 -> n52 // ":=" -> "i"
+  n51 -> n53 // ":=" -> "+"
+  n53 -> n54 // "+" -> "i"
+  n53 -> n55 // "+" -> "1"
+
+}
