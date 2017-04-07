@@ -1,6 +1,6 @@
 function main()
-    x = read_file("sample1.arff")
-    y = read_file("sample2.arff")
+    x = read_file("sample1.csv")
+    y = read_file("sample2.csv")
     aux1 = from x
         select (:age <= 5)
         select (:1 = "MJ RULES")

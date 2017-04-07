@@ -4,9 +4,9 @@ function mergesort(table1,table2)   # Esto no es un mergesort de verdad
 end
 
 function main()     # Se ejecuta por defecto
-    x = read_file("sample1.arff")
-    y = read_file("sample2.arff")
+    x = read_file("sample1.csv")
+    y = read_file("sample2.csv")
     tmp = mergesort(x,y)
     tmp = sample(20,tmp)
-    write_file(tmp, "out.arff")
+    write_file(tmp, "out.csv")
 end
