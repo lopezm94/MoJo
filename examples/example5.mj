@@ -6,7 +6,8 @@ function main()
     add_column(x, ["lorey money"])
     add_row(x, ["Marc", "Ortiz", 22, "Making neural networks and playing basket", 1000000]) # Si el tamaño de la lista es distinto al numero de columnas: ERROR
     bankrupt = true
+
     if (bankrupt)
-        from x update "lorey money" with 0
+        from x update "lorey money" with 0 end
     end
 end

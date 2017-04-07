@@ -1,7 +1,10 @@
 function main()
     x = read_file("sample1.arff")
     y = read_file("sample2.arff")
-    aux1 = from x select (:age <= 5 and :1 == "MJ RULES")   # Con ':' se accede a la columna de la tabla
-    aux2 = from y filter (:age > 5  or :"Bio" != "MJ RULES")
-    return (aux1 == aux2)   # Si no hay return se retorna VOID por defecto
+    aux1 = from x
+        select (:age <= 5)
+        select (:1 = "MJ RULES")
+    end
+    aux2 = from y filter (:age > 5  or :"Bio" != "MJ RULES") end# : character is for accesing directly the column
+    return (aux1 = aux2)   # Si no hay return se retorna VOID por defecto
 end

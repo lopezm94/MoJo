@@ -46,6 +46,7 @@ tokens {
     PREF;       // Parameter by reference in the list of parameters
     ACCESS;     // Access element contents
     LIST;       // List
+    COLUMN;     // Columna
 }
 
 @header {
@@ -96,15 +97,9 @@ instruction
         |	return_stmt     // Return statement
         |	read            // Read a variable
         | 	write           // Write a string or an expression
-        |   filter                // Special operations for tables
-        |   select 
+        |   from            // Special instructions for tables
         |                   // Nothing
         ;
-        
-    
-filter  : FROM! expr FILTER^ expr;
-
-select  : FROM! expr SELECT^ expr;
 
 // Assignment
 assign	:	var eq=EQUAL expr -> ^(ASSIGN[$eq,":="] var expr)
@@ -160,18 +155,32 @@ atom    :   var
         |   '('! expr ')'!
         |   column
         |   list
+        |   from
         ;
 
-list    :   '[' expr_list ']' -> ^(LIST ^(ARGLIST expr_list))
+list    :   '[' expr_list? ']' -> ^(LIST ^(ARGLIST expr_list?))
         ;
         
-column  :   ':' (b=STRING | b=var | b=INT) -> ^(COLUMN b)
+column  :   ':' name -> ^(COLUMN name)
+        ;
+
+name    :   STRING
+        |   var
+        |   INT
         ;
         
 var     :   ID 
         |   ID '[' expr_list ']' -> ^(ACCESS ID ^(ARGLIST expr_list))
         ;
 
+from    :   FROM^ expr (('\n')* select | filter | update)+ ('\n')* END!;
+
+select  :   SELECT^ expr;
+
+filter  :   FILTER^ expr;
+
+update  :   UPDATE^ expr (WHEN^ expr)? WITH! expr;
+        
 // A function call has a list of arguments in parenthesis (possibly empty)
 funcall :   ID '(' expr_list? ')' -> ^(FUNCALL ID ^(ARGLIST expr_list?))
         ;
@@ -204,16 +213,19 @@ END     : 'end' ;
 RETURN	: 'return' ;
 READ	: 'read' ;
 SELECT  : 'select';
+UPDATE  : 'update';
+WHEN    : 'when';
 FROM    : 'from';
 FILTER  : 'filter';
 WRITE	: 'write' ;
 TRUE    : 'true' ;
 FALSE   : 'false';
+WITH    : 'with';
 ID  	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 INT 	:	'0'..'9'+ ;
 
 // C-style comments
-COMMENT	: '#' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
+COMMENT	: '#' ~('\n'|'\r')* '\r'? {$channel=HIDDEN;}
     	| '#-' ( options {greedy=false;} : . )* '-#' {$channel=HIDDEN;}
     	;
 

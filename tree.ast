@@ -9,140 +9,135 @@ digraph {
   n0 [label="LIST_FUNCTIONS"];
   n1 [label="function"];
   n1 [label="function"];
-  n2 [label="main"];
+  n2 [label="mergesort"];
   n3 [label="PARAMS"];
-  n4 [label="LIST_INSTR"];
-  n4 [label="LIST_INSTR"];
-  n5 [label=":="];
-  n5 [label=":="];
-  n6 [label="tmp"];
-  n7 [label="FUNCALL"];
-  n7 [label="FUNCALL"];
-  n8 [label="read_file"];
-  n9 [label="ARGLIST"];
-  n9 [label="ARGLIST"];
-  n10 [label="\"sample1.arff\""];
-  n11 [label=":="];
-  n11 [label=":="];
-  n12 [label="i"];
-  n13 [label="0"];
-  n14 [label=":="];
-  n14 [label=":="];
-  n15 [label="j"];
-  n16 [label="0"];
-  n17 [label=":="];
-  n17 [label=":="];
-  n18 [label="nrows"];
-  n19 [label="FUNCALL"];
-  n19 [label="FUNCALL"];
-  n20 [label="numRows"];
-  n21 [label="ARGLIST"];
-  n21 [label="ARGLIST"];
-  n22 [label="tmp"];
+  n3 [label="PARAMS"];
+  n4 [label="table1"];
+  n5 [label="table2"];
+  n6 [label="LIST_INSTR"];
+  n6 [label="LIST_INSTR"];
+  n7 [label=":="];
+  n7 [label=":="];
+  n8 [label="tmp"];
+  n9 [label="FUNCALL"];
+  n9 [label="FUNCALL"];
+  n10 [label="merge"];
+  n11 [label="ARGLIST"];
+  n11 [label="ARGLIST"];
+  n12 [label="table1"];
+  n13 [label="table2"];
+  n14 [label="return"];
+  n14 [label="return"];
+  n15 [label="FUNCALL"];
+  n15 [label="FUNCALL"];
+  n16 [label="sort"];
+  n17 [label="ARGLIST"];
+  n17 [label="ARGLIST"];
+  n18 [label="tmp"];
+  n19 [label="function"];
+  n19 [label="function"];
+  n20 [label="main"];
+  n21 [label="PARAMS"];
+  n22 [label="LIST_INSTR"];
+  n22 [label="LIST_INSTR"];
   n23 [label=":="];
   n23 [label=":="];
-  n24 [label="ncols"];
+  n24 [label="x"];
   n25 [label="FUNCALL"];
   n25 [label="FUNCALL"];
-  n26 [label="numCols"];
+  n26 [label="read_file"];
   n27 [label="ARGLIST"];
   n27 [label="ARGLIST"];
-  n28 [label="tmp"];
-  n29 [label="while"];
-  n29 [label="while"];
-  n30 [label="<"];
-  n30 [label="<"];
-  n31 [label="i"];
-  n32 [label="nrows"];
-  n33 [label="LIST_INSTR"];
-  n33 [label="LIST_INSTR"];
-  n34 [label="while"];
-  n34 [label="while"];
-  n35 [label="<"];
-  n35 [label="<"];
-  n36 [label="j"];
-  n37 [label="ncols"];
-  n38 [label="LIST_INSTR"];
-  n38 [label="LIST_INSTR"];
-  n39 [label=":="];
-  n39 [label=":="];
-  n40 [label="ACCESS"];
-  n40 [label="ACCESS"];
-  n41 [label="tmp"];
-  n42 [label="ARGLIST"];
-  n42 [label="ARGLIST"];
-  n43 [label="i"];
-  n44 [label="j"];
-  n45 [label="false"];
-  n46 [label=":="];
-  n46 [label=":="];
-  n47 [label="j"];
-  n48 [label="+"];
-  n48 [label="+"];
-  n49 [label="j"];
-  n50 [label="1"];
-  n51 [label=":="];
-  n51 [label=":="];
-  n52 [label="i"];
-  n53 [label="+"];
-  n53 [label="+"];
-  n54 [label="i"];
-  n55 [label="1"];
+  n28 [label="\"sample1.arff\""];
+  n29 [label=":="];
+  n29 [label=":="];
+  n30 [label="y"];
+  n31 [label="FUNCALL"];
+  n31 [label="FUNCALL"];
+  n32 [label="read_file"];
+  n33 [label="ARGLIST"];
+  n33 [label="ARGLIST"];
+  n34 [label="\"sample2.arff\""];
+  n35 [label=":="];
+  n35 [label=":="];
+  n36 [label="tmp"];
+  n37 [label="FUNCALL"];
+  n37 [label="FUNCALL"];
+  n38 [label="mergesort"];
+  n39 [label="ARGLIST"];
+  n39 [label="ARGLIST"];
+  n40 [label="x"];
+  n41 [label="y"];
+  n42 [label=":="];
+  n42 [label=":="];
+  n43 [label="tmp"];
+  n44 [label="FUNCALL"];
+  n44 [label="FUNCALL"];
+  n45 [label="sample"];
+  n46 [label="ARGLIST"];
+  n46 [label="ARGLIST"];
+  n47 [label="20"];
+  n48 [label="tmp"];
+  n49 [label="FUNCALL"];
+  n49 [label="FUNCALL"];
+  n50 [label="write_file"];
+  n51 [label="ARGLIST"];
+  n51 [label="ARGLIST"];
+  n52 [label="tmp"];
+  n53 [label="\"out.arff\""];
 
   n0 -> n1 // "LIST_FUNCTIONS" -> "function"
-  n1 -> n2 // "function" -> "main"
+  n1 -> n2 // "function" -> "mergesort"
   n1 -> n3 // "function" -> "PARAMS"
-  n1 -> n4 // "function" -> "LIST_INSTR"
-  n4 -> n5 // "LIST_INSTR" -> ":="
-  n5 -> n6 // ":=" -> "tmp"
-  n5 -> n7 // ":=" -> "FUNCALL"
-  n7 -> n8 // "FUNCALL" -> "read_file"
-  n7 -> n9 // "FUNCALL" -> "ARGLIST"
-  n9 -> n10 // "ARGLIST" -> "\"sample1.arff\""
-  n4 -> n11 // "LIST_INSTR" -> ":="
-  n11 -> n12 // ":=" -> "i"
-  n11 -> n13 // ":=" -> "0"
-  n4 -> n14 // "LIST_INSTR" -> ":="
-  n14 -> n15 // ":=" -> "j"
-  n14 -> n16 // ":=" -> "0"
-  n4 -> n17 // "LIST_INSTR" -> ":="
-  n17 -> n18 // ":=" -> "nrows"
-  n17 -> n19 // ":=" -> "FUNCALL"
-  n19 -> n20 // "FUNCALL" -> "numRows"
-  n19 -> n21 // "FUNCALL" -> "ARGLIST"
-  n21 -> n22 // "ARGLIST" -> "tmp"
-  n4 -> n23 // "LIST_INSTR" -> ":="
-  n23 -> n24 // ":=" -> "ncols"
+  n3 -> n4 // "PARAMS" -> "table1"
+  n3 -> n5 // "PARAMS" -> "table2"
+  n1 -> n6 // "function" -> "LIST_INSTR"
+  n6 -> n7 // "LIST_INSTR" -> ":="
+  n7 -> n8 // ":=" -> "tmp"
+  n7 -> n9 // ":=" -> "FUNCALL"
+  n9 -> n10 // "FUNCALL" -> "merge"
+  n9 -> n11 // "FUNCALL" -> "ARGLIST"
+  n11 -> n12 // "ARGLIST" -> "table1"
+  n11 -> n13 // "ARGLIST" -> "table2"
+  n6 -> n14 // "LIST_INSTR" -> "return"
+  n14 -> n15 // "return" -> "FUNCALL"
+  n15 -> n16 // "FUNCALL" -> "sort"
+  n15 -> n17 // "FUNCALL" -> "ARGLIST"
+  n17 -> n18 // "ARGLIST" -> "tmp"
+  n0 -> n19 // "LIST_FUNCTIONS" -> "function"
+  n19 -> n20 // "function" -> "main"
+  n19 -> n21 // "function" -> "PARAMS"
+  n19 -> n22 // "function" -> "LIST_INSTR"
+  n22 -> n23 // "LIST_INSTR" -> ":="
+  n23 -> n24 // ":=" -> "x"
   n23 -> n25 // ":=" -> "FUNCALL"
-  n25 -> n26 // "FUNCALL" -> "numCols"
+  n25 -> n26 // "FUNCALL" -> "read_file"
   n25 -> n27 // "FUNCALL" -> "ARGLIST"
-  n27 -> n28 // "ARGLIST" -> "tmp"
-  n4 -> n29 // "LIST_INSTR" -> "while"
-  n29 -> n30 // "while" -> "<"
-  n30 -> n31 // "<" -> "i"
-  n30 -> n32 // "<" -> "nrows"
-  n29 -> n33 // "while" -> "LIST_INSTR"
-  n33 -> n34 // "LIST_INSTR" -> "while"
-  n34 -> n35 // "while" -> "<"
-  n35 -> n36 // "<" -> "j"
-  n35 -> n37 // "<" -> "ncols"
-  n34 -> n38 // "while" -> "LIST_INSTR"
-  n38 -> n39 // "LIST_INSTR" -> ":="
-  n39 -> n40 // ":=" -> "ACCESS"
-  n40 -> n41 // "ACCESS" -> "tmp"
-  n40 -> n42 // "ACCESS" -> "ARGLIST"
-  n42 -> n43 // "ARGLIST" -> "i"
-  n42 -> n44 // "ARGLIST" -> "j"
-  n39 -> n45 // ":=" -> "false"
-  n38 -> n46 // "LIST_INSTR" -> ":="
-  n46 -> n47 // ":=" -> "j"
-  n46 -> n48 // ":=" -> "+"
-  n48 -> n49 // "+" -> "j"
-  n48 -> n50 // "+" -> "1"
-  n33 -> n51 // "LIST_INSTR" -> ":="
-  n51 -> n52 // ":=" -> "i"
-  n51 -> n53 // ":=" -> "+"
-  n53 -> n54 // "+" -> "i"
-  n53 -> n55 // "+" -> "1"
+  n27 -> n28 // "ARGLIST" -> "\"sample1.arff\""
+  n22 -> n29 // "LIST_INSTR" -> ":="
+  n29 -> n30 // ":=" -> "y"
+  n29 -> n31 // ":=" -> "FUNCALL"
+  n31 -> n32 // "FUNCALL" -> "read_file"
+  n31 -> n33 // "FUNCALL" -> "ARGLIST"
+  n33 -> n34 // "ARGLIST" -> "\"sample2.arff\""
+  n22 -> n35 // "LIST_INSTR" -> ":="
+  n35 -> n36 // ":=" -> "tmp"
+  n35 -> n37 // ":=" -> "FUNCALL"
+  n37 -> n38 // "FUNCALL" -> "mergesort"
+  n37 -> n39 // "FUNCALL" -> "ARGLIST"
+  n39 -> n40 // "ARGLIST" -> "x"
+  n39 -> n41 // "ARGLIST" -> "y"
+  n22 -> n42 // "LIST_INSTR" -> ":="
+  n42 -> n43 // ":=" -> "tmp"
+  n42 -> n44 // ":=" -> "FUNCALL"
+  n44 -> n45 // "FUNCALL" -> "sample"
+  n44 -> n46 // "FUNCALL" -> "ARGLIST"
+  n46 -> n47 // "ARGLIST" -> "20"
+  n46 -> n48 // "ARGLIST" -> "tmp"
+  n22 -> n49 // "LIST_INSTR" -> "FUNCALL"
+  n49 -> n50 // "FUNCALL" -> "write_file"
+  n49 -> n51 // "FUNCALL" -> "ARGLIST"
+  n51 -> n52 // "ARGLIST" -> "tmp"
+  n51 -> n53 // "ARGLIST" -> "\"out.arff\""
 
 }
