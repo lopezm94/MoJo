@@ -2,12 +2,12 @@ function main()
     tmp = read_file("sample1.arff")
     i = 0
     j = 0
-    nrows = numRows(tmp)
-    ncols = numCols(tmp)
-    while (i < nrows)
-        while (j < ncols)
+    nrows = num_rows(tmp)
+    names = column_names(tmp)
+    while (i < nrows)   # Acceso a la tabla por numero de row y nombre de columna
+        while (j < length(names))
             # Si los tipos no concuerdan activa una excepcion de tipos
-            tmp[i,j] = false
+            tmp[i,names[j]] = i+j
             j = j + 1
         end
         i = i + 1

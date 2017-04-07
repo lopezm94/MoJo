@@ -1,0 +1,8 @@
+function main()
+    x = source("example1.mj", []); # Ejecuta la funcion main del script "example1.mj" con los parametros dentro de la lista
+    if (x)
+        write "Your instruction functions work!"
+    else
+        write "Check your language implementation <.<"
+    end
+end

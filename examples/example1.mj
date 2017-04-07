@@ -1,14 +1,12 @@
-function mergesort(table1,table2)
+function mergesort(table1,table2)   # Esto no es un mergesort de verdad
     tmp = merge(table1, table2)
     return sort(tmp)
 end
 
-function main()
+function main()     # Se ejecuta por defecto
     x = read_file("sample1.arff")
     y = read_file("sample2.arff")
     tmp = mergesort(x,y)
     tmp = sample(20,tmp)
     write_file(tmp, "out.arff")
-    select (:age <= 5) from x
-    filter (:age > 5) from y
 end

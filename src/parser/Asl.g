@@ -45,6 +45,7 @@ tokens {
     PVALUE;     // Parameter by value in the list of parameters
     PREF;       // Parameter by reference in the list of parameters
     ACCESS;     // Access element contents
+    LIST;       // List
 }
 
 @header {
@@ -95,16 +96,22 @@ instruction
         |	return_stmt     // Return statement
         |	read            // Read a variable
         | 	write           // Write a string or an expression
-//        |   table_operations// Special operations for tables
+        |   filter                // Special operations for tables
+        |   select 
         |                   // Nothing
         ;
+        
+    
+filter  : FROM! expr FILTER^ expr;
+
+select  : FROM! expr SELECT^ expr;
 
 // Assignment
 assign	:	var eq=EQUAL expr -> ^(ASSIGN[$eq,":="] var expr)
         ;
 
 // if-then-else (else is optional)
-ite_stmt	:	IF^ expr THEN! block_instructions (ELSE! block_instructions)? END!
+ite_stmt	:	IF^ '('! expr ')'! block_instructions (ELSE! block_instructions)? END!
             ;
 
 // while statement
@@ -119,7 +126,7 @@ return_stmt	:	RETURN^ expr?
 read	:	READ^ ID
         ;
 
-// Write an expression or a string
+// Write an expression or a stringh
 write	:   WRITE^ expr
         ;
 
@@ -151,6 +158,14 @@ atom    :   var
         |   funcall
         |   STRING
         |   '('! expr ')'!
+        |   column
+        |   list
+        ;
+
+list    :   '[' expr_list ']' -> ^(LIST ^(ARGLIST expr_list))
+        ;
+        
+column  :   ':' (b=STRING | b=var | b=INT) -> ^(COLUMN b)
         ;
         
 var     :   ID 
@@ -178,7 +193,7 @@ MUL	    : '*';
 DIV	    : '/';
 MOD	    : '%' ;
 NOT	    : 'not';
-AND	    : 'and' ;
+AND	    : 'and';
 OR	    : 'or' ;	
 IF  	: 'if' ;
 THEN	: 'then' ;
@@ -188,6 +203,9 @@ FUNC	: 'function' ;
 END     : 'end' ;
 RETURN	: 'return' ;
 READ	: 'read' ;
+SELECT  : 'select';
+FROM    : 'from';
+FILTER  : 'filter';
 WRITE	: 'write' ;
 TRUE    : 'true' ;
 FALSE   : 'false';
