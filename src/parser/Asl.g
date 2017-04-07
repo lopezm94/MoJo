@@ -60,7 +60,7 @@ package parser;
 
 
 // A program is a list of functions
-prog	: func (('\n')* func)* ('\n')* EOF -> ^(LIST_FUNCTIONS func+)
+prog	: func (('\r'? '\n')* func)* ('\r'? '\n')* EOF -> ^(LIST_FUNCTIONS func+)
         ;
             
 // A function has a name, a list of parameters and a block of instructions	
@@ -83,7 +83,7 @@ param   :   '&' id=ID -> ^(PREF[$id,$id.text])
 
 // A list of instructions, all of them gouped in a subtree
 block_instructions
-        :	 instruction ((';' | '\n') instruction)*
+        :	 instruction ((';' | '\r'? '\n') instruction)*
             -> ^(LIST_INSTR instruction+)
         ;
 
@@ -173,7 +173,16 @@ var     :   ID
         |   ID '[' expr_list ']' -> ^(ACCESS ID ^(ARGLIST expr_list))
         ;
 
-from    :   FROM^ expr (('\n')* select | filter | update)+ ('\n')* END!;
+from    :   FROM^ expr from_instructions END!;
+
+from_instructions   :   from_instruction ((';' | '\r'? '\n') from_instruction)*
+                    ;
+
+from_instruction    :   select
+                    |   filter
+                    |   update
+                    |
+                    ;
 
 select  :   SELECT^ expr;
 
@@ -225,7 +234,7 @@ ID  	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 INT 	:	'0'..'9'+ ;
 
 // C-style comments
-COMMENT	: '#' ~('\n'|'\r')* '\r'? {$channel=HIDDEN;}
+COMMENT	: '#' ~('-') ~('\n'|'\r')* '\r'? {$channel=HIDDEN;}
     	| '#-' ( options {greedy=false;} : . )* '-#' {$channel=HIDDEN;}
     	;
 
