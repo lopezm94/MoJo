@@ -1,6 +1,7 @@
 bin/
 javadoc/
 classes/
+examples/*.pdf
 src/parser/*.java
 src/parser/*.tokens
 trees/
