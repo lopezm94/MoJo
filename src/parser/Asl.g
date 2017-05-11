@@ -47,6 +47,7 @@ tokens {
     ACCESS;     // Access element contents
     LIST;       // List
     COLUMN;     // Columna
+    FROM_ACTIONS; //accions a fer dins del block from
 }
 
 @header {
@@ -158,7 +159,7 @@ atom    :   var
         |   from
         ;
 
-list    :   '[' expr_list? ']' -> ^(LIST ^(ARGLIST expr_list?))
+list    :   '[' expr_list? ']' -> ^(LIST expr_list?)
         ;
         
 column  :   ':' name -> ^(COLUMN name)
@@ -173,9 +174,9 @@ var     :   ID
         |   ID '[' expr_list ']' -> ^(ACCESS ID ^(ARGLIST expr_list))
         ;
 
-from    :   FROM^ expr from_instructions END!;
+from    :   FROM expr from_instructions END -> ^(FROM expr ^(FROM_ACTIONS from_instructions));
 
-from_instructions   :   from_instruction ((';' | '\r'? '\n') from_instruction)*
+from_instructions   :   from_instruction ((';'! | '\r'!? '\n'!) from_instruction)*
                     ;
 
 from_instruction    :   select
