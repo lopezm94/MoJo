@@ -35,19 +35,19 @@ options {
 // Imaginary tokens to create some AST nodes
 
 tokens {
-    LIST_FUNCTIONS; // List of functions (the root of the tree)
-    ASSIGN;     // Assignment instruction
-    PARAMS;     // List of parameters in the declaration of a function
-    FUNCALL;    // Function call
-    ARGLIST;    // List of arguments passed in a function call
-    LIST_INSTR; // Block of instructions
-    BOOLEAN;    // Boolean atom (for Boolean constants "true" or "false")
-    PVALUE;     // Parameter by value in the list of parameters
-    PREF;       // Parameter by reference in the list of parameters
-    ACCESS;     // Access element contents
-    LIST;       // List
-    COLUMN;     // Columna
-    FROM_ACTIONS; //accions a fer dins del block from
+    LIST_FUNCTIONS;   // List of functions (the root of the tree)
+    ASSIGN;           // Assignment instruction
+    PARAMS;           // List of parameters in the declaration of a function
+    FUNCALL;          // Function call
+    ARGLIST;          // List of arguments passed in a function call
+    LIST_INSTR;       // Block of instructions
+    BOOLEAN;          // Boolean atom (for Boolean constants "true" or "false")
+    PVALUE;           // Parameter by value in the list of parameters
+    PREF;             // Parameter by reference in the list of parameters
+    ACCESS;           // Access element contents
+    LIST;             // List
+    COLUMN;           // Columna
+    FROM_ACTIONS;     //accions a fer dins del block from
 }
 
 @header {
@@ -99,7 +99,7 @@ instruction
         |	read            // Read a variable
         | write           // Write a string or an expression
         | from            // Special instructions for tables
-        |                   // Nothing
+        |                 // Nothing
         ;
 
 // Assignment
