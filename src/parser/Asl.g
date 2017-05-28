@@ -63,10 +63,10 @@ package parser;
 // A program is a list of functions
 prog	: func (('\r'? '\n')* func)* ('\r'? '\n')* EOF -> ^(LIST_FUNCTIONS func+)
         ;
-            
-// A function has a name, a list of parameters and a block of instructions	
-func	: FUNC^ ID params block_instructions END!
-        ;
+
+// A function has a name, a list of parameters and a block of instructions
+func  : FUNC^ ID params block_instructions END!
+      ;
 
 // The list of parameters grouped in a subtree (it can be empty)
 params	: '(' paramlist? ')' -> ^(PARAMS paramlist?)
@@ -91,14 +91,14 @@ block_instructions
 //******************************************** TODO table operations ************************************************************************************
 // The different types of instructions
 instruction
-        :	assign          // Assignment
-        |	ite_stmt        // if-then-else
-        |	while_stmt      // while statement
-        |   funcall         // Call to a procedure (no result produced)
-        |	return_stmt     // Return statement
+        : assign          // Assignment
+        | ite_stmt        // if-then-else
+        | while_stmt      // while statement
+        | funcall         // Call to a procedure (no result produced)
+        | return_stmt     // Return statement
         |	read            // Read a variable
-        | 	write           // Write a string or an expression
-        |   from            // Special instructions for tables
+        | write           // Write a string or an expression
+        | from            // Special instructions for tables
         |                   // Nothing
         ;
 
@@ -119,16 +119,16 @@ return_stmt	:	RETURN^ expr?
         ;
 
 // Read a variable
-read	:	READ^ ID
-        ;
+read  :	READ^ ID
+      ;
 
 // Write an expression or a stringh
-write	:   WRITE^ expr
-        ;
+write :   WRITE^ expr
+      ;
 
 // Grammar for expressions with boolean, relational and aritmetic operators
-expr    :   boolterm (OR^ boolterm)*
-        ;
+expr  :   boolterm (OR^ boolterm)*
+      ;
 
 boolterm:   boolfact (AND^ boolfact)*
         ;
@@ -148,7 +148,7 @@ factor  :   (NOT^ | PLUS^ | MINUS^)? atom
 // Atom of the expressions (variables, integer and boolean literals).
 // An atom can also be a function call or another expression
 // in parenthesis
-atom    :   var 
+atom    :   var
         |   INT
         |   (b=TRUE | b=FALSE)  -> ^(BOOLEAN[$b,$b.text])
         |   funcall
@@ -161,7 +161,7 @@ atom    :   var
 
 list    :   '[' expr_list? ']' -> ^(LIST expr_list?)
         ;
-        
+
 column  :   ':' name -> ^(COLUMN name)
         ;
 
@@ -169,8 +169,8 @@ name    :   STRING
         |   var
         |   INT
         ;
-        
-var     :   ID 
+
+var     :   ID
         |   ID '[' expr_list ']' -> ^(ACCESS ID ^(ARGLIST expr_list))
         ;
 
@@ -190,56 +190,56 @@ select  :   SELECT^ expr;
 filter  :   FILTER^ expr;
 
 update  :   UPDATE^ expr (WHEN^ expr)? WITH! expr;
-        
+
 // A function call has a list of arguments in parenthesis (possibly empty)
 funcall :   ID '(' expr_list? ')' -> ^(FUNCALL ID ^(ARGLIST expr_list?))
         ;
 
 // A list of expressions separated by commas
-expr_list:  expr (','! expr)*
-        ;
+expr_list :  expr (','! expr)*
+          ;
 
 // Basic tokens
-EQUAL	: '=' ;
-NOT_EQUAL: '!=' ;
-LT	    : '<' ;
-LE	    : '<=';
-GT	    : '>';
-GE	    : '>=';
-PLUS	: '+' ;
-MINUS	: '-' ;
-MUL	    : '*';
-DIV	    : '/';
-MOD	    : '%' ;
-NOT	    : 'not';
-AND	    : 'and';
-OR	    : 'or' ;	
-IF  	: 'if' ;
-THEN	: 'then' ;
-ELSE	: 'else' ;
-WHILE	: 'while' ;
-FUNC	: 'function' ;
-END     : 'end' ;
-RETURN	: 'return' ;
-READ	: 'read' ;
-SELECT  : 'select';
-UPDATE  : 'update';
-WHEN    : 'when';
-FROM    : 'from';
-FILTER  : 'filter';
-WRITE	: 'write' ;
-TRUE    : 'true' ;
-FALSE   : 'false';
-WITH    : 'with';
-ID  	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '!'?;
-INT 	:	'0'..'9'+ ;
+EQUAL     : '=' ;
+NOT_EQUAL : '!=' ;
+LT        : '<' ;
+LE        : '<=';
+GT        : '>';
+GE        : '>=';
+PLUS      : '+' ;
+MINUS	    : '-' ;
+MUL	      : '*';
+DIV	      : '/';
+MOD	      : '%' ;
+NOT	      : 'not';
+AND	      : 'and';
+OR        : 'or' ;
+IF        : 'if' ;
+THEN      : 'then' ;
+ELSE      : 'else' ;
+WHILE     : 'while' ;
+FUNC      : 'function' ;
+END       : 'end' ;
+RETURN    : 'return' ;
+READ      : 'read' ;
+SELECT    : 'select';
+UPDATE    : 'update';
+WHEN      : 'when';
+FROM      : 'from';
+FILTER    : 'filter';
+WRITE     : 'write' ;
+TRUE      : 'true' ;
+FALSE     : 'false';
+WITH      : 'with';
+ID        :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '!'?;
+INT       :	'0'..'9'+ ;
 
 // C-style comments
 COMMENT	: '#' ~('-') ~('\n'|'\r')* '\r'? {$channel=HIDDEN;}
     	| '#-' ( options {greedy=false;} : . )* '-#' {$channel=HIDDEN;}
     	;
 
-// Strings (in quotes) with escape sequences        
+// Strings (in quotes) with escape sequences
 STRING  :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
         ;
 
@@ -254,5 +254,3 @@ WS  	: ( ' '
         | '\r'
         ) {$channel=HIDDEN;}
     	;
-
-
