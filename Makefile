@@ -45,6 +45,13 @@ PARSER_SRC =	$(PARSER)/$(TARGET)Lexer.java \
 INTERP_SRC =	$(INTERP)/Interp.java \
 				$(INTERP)/Stack.java \
 				$(INTERP)/Data.java \
+				$(INTERP)/VoidData.java \
+				$(INTERP)/IntegerData.java \
+				$(INTERP)/BooleanData.java \
+				$(INTERP)/ListData.java \
+				$(INTERP)/DictData.java \
+				$(INTERP)/TableData.java \
+				$(INTERP)/StringData.java \
 				$(INTERP)/$(TARGET)Tree.java \
 				$(INTERP)/AslTreeAdaptor.java
 
@@ -74,10 +81,10 @@ exec:
 	chmod a+x $(EXEC)
 
 clean:
-	rm -rf $(PARSER)/*.java $(PARSER)/*.tokens 
+	rm -rf $(PARSER)/*.java $(PARSER)/*.tokens
 	rm -rf $(CLASSDIR)
 	rm -rf $(JAVADOC)
 	rm -rf $(BIN)
 
 tar: clean
-	cd ..; tar cvzf $(DISTRIB) $(TARGET); mv $(DISTRIB) $(TARGET); cd $(TARGET) 
+	cd ..; tar cvzf $(DISTRIB) $(TARGET); mv $(DISTRIB) $(TARGET); cd $(TARGET)
