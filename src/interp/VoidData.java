@@ -1,7 +1,7 @@
 package interp;
 import parser.*;
 
-public class VoidData implements Data {
+public class VoidData extends Data {
 
   public VoidData() { assert true; }
 

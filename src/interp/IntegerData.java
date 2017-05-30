@@ -1,7 +1,7 @@
 package interp;
 import parser.*;
 
-public class IntegerData implements Data {
+public class IntegerData extends Data {
 
   private int value;
 

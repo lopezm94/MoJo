@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class TableData implements Data {
+public class TableData extends Data {
 
     private ArrayList<String> types;
     private ListData<StringData> labels;
@@ -89,20 +89,6 @@ public class TableData implements Data {
           default: assert false;
       }
       return null;
-    }
-
-    public Data get(int row, String col) {
-      return get(row, new StringData(col));
-    }
-    public Data get(int row, StringData col) {
-      return table.get(row).get(col);
-    }
-
-    public void put(int row, String col, Data data) {
-      put(row, new StringData(col), data);
-    }
-    public void put(int row, StringData col, Data data) {
-      table.get(row).put(col, data);
     }
 
     /**Adds a row in the table**/
