@@ -1,6 +1,7 @@
 package interp;
 import parser.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListData<T extends Data> extends Data {
 
@@ -76,6 +77,12 @@ public class ListData<T extends Data> extends Data {
         throw new RuntimeException("Received " + data.getType() + ", expected ListData\n");
       else
         return (ListData) data;
+    }
+
+    public ListData sort() {
+      ListData res = ListData.cast(deepClone());
+      Collections.shuffle(res.list);
+      return res;
     }
 
     /**

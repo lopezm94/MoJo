@@ -85,6 +85,12 @@ public class TableData extends Data {
       return res;
     }
 
+    public TableData sort() {
+      TableData res = TableData.cast(deepClone());
+      Collections.shuffle(res.table);
+      return res;
+    }
+
     public TableData sample(IntegerData n) {
       return sample(n.getValue());
     }

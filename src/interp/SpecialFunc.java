@@ -120,6 +120,21 @@ public abstract class SpecialFunc {
     }
   }
 
+  public static class Sort extends SpecialFunc {
+    private static final int nparams = 1;
+    private static final String funcname = "sort";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, nparams, args);
+      assert Data.isType("Table", args.get(0))
+        || Data.isType("List", args.get(0));
+      Data seqCollection = args.get(0);
+      if (Data.isType("Table", args.get(0)))
+        return TableData.cast(seqCollection).sort();
+      else
+        return ListData.cast(seqCollection).sort();
+    }
+  }
+
   public static class CreateTable extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "create_table";
