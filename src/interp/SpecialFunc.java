@@ -7,8 +7,8 @@ public abstract class SpecialFunc {
 
   public abstract Data call(ArrayList<Data> args);
 
-  static void checkParams(String funcname, int n, ArrayList<Data> args) {
-    if (n != args.size()) {
+  static void checkParams(String funcname, int min, int max, ArrayList<Data> args) {
+    if (max < args.size() || min > args.size()) {
       throw new RuntimeException (
         "Incorrect number of parameters calling function " + funcname + "\n"
         );
@@ -19,7 +19,7 @@ public abstract class SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "read_file";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparams, nparams, args);
 
       TableData result = new TableData();
       String filepath = StringData.cast(args.get(0)).getValue();
@@ -52,7 +52,7 @@ public abstract class SpecialFunc {
     private static final int nparams = 2;
     private static final String funcname = "write_file";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparams, nparams, args);
 
       TableData table = TableData.cast(args.get(0));
       String filepath = StringData.cast(args.get(1)).getValue();
@@ -111,7 +111,7 @@ public abstract class SpecialFunc {
     private static final int nparams = 2;
     private static final String funcname = "sample";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparams, nparams, args);
       assert Data.isType("Integer", args.get(0));
       assert Data.isType("Table", args.get(1));
       IntegerData n = IntegerData.cast(args.get(0));
@@ -124,7 +124,7 @@ public abstract class SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "create_table";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparams, nparams, args);
       assert Data.isType("List",args.get(0));
       ListData list = (ListData) args.get(0);
       TableData result = new TableData(list);
@@ -136,7 +136,7 @@ public abstract class SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "column_names";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparams, nparams, args);
       assert Data.isType("Table", args.get(0));
       TableData table = (TableData) args.get(0);
       return table.getColumnNames();
@@ -144,30 +144,86 @@ public abstract class SpecialFunc {
   }
 
    public static class AddRow extends SpecialFunc {
-    private static final int nparams = 2;
+    private static final int nparamsMin = 1;
+    private static final int nparamsMax = 10;
     private static final String funcname = "add_row!";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparamsMin, nparamsMax, args);
       assert Data.isType("Table", args.get(0));
       assert Data.isType("Dict", args.get(1));
       TableData table = (TableData) args.get(0);
-      DictData dict = (DictData) args.get(1);
-      table.addRow(dict);
+      for(int i = 1; i<args.size(); ++i){
+        assert args.get(i).getType().equals("Dict");
+        DictData row = (DictData) args.get(i);
+        table.addRow(row);
+      }
       return table;
     }
   }
 
    public static class AddRowCopy extends SpecialFunc {
-    private static final int nparams = 1;
+    private static final int nparamsMin = 1;
+    private static final int nparamsMax = 10;
     private static final String funcname = "add_row";
     public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, args);
+      checkParams(funcname, nparamsMin, nparamsMax, args);
       assert Data.isType("Table",args.get(0));
       assert Data.isType("Dict", args.get(1));
       TableData table = (TableData) args.get(0);
-      DictData dict = (DictData) args.get(1);
-      return table.addRowCopy(dict);
+      TableData newTable = (TableData) table.deepClone();
+      for(int i = 1; i<args.size(); ++i){
+        assert args.get(i).getType().equals("Dict");
+        DictData row = (DictData) args.get(i);
+        newTable.addRow(row);
+      }
+      return newTable;
     }
   }
+
+  public static class AddColumn extends SpecialFunc{
+    private static final int nparams = 1;
+    private static final String funcname = "add_column!";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, nparams, args);
+      assert args.get(0).getType().equals("Table");
+      String type = args.get(1).getType();
+      TableData table = (TableData) args.get(0);
+      if(type.equals("List")){
+        ListData<StringData> newCols = (ListData<StringData>) args.get(1);
+        for(int i = 0; i<newCols.size(); ++i){
+          table.addColumn(newCols.get(i));
+        }
+        return table;
+      }else if(type.equals("Dict")){
+        //DictData newColsWithValue = (DictData) args.get(1);
+
+      }else assert false;
+      return null;
+    }
+  }
+
+  public static class AddColumnCopy extends SpecialFunc{
+    private static final int nparams = 2;
+    private static final String funcname = "add_column";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams , nparams , args);
+      assert args.get(0).getType().equals("Table");
+      String type = args.get(1).getType();
+      TableData table = (TableData) args.get(0);
+      TableData newTable = (TableData) table.deepClone();
+      if(type.equals("List")){
+        ListData<StringData> newCols = (ListData<StringData>) args.get(1);
+        for(int i = 0; i<newCols.size(); ++i){
+          newTable.addColumn(newCols.get(i));
+        }
+        return newTable;
+      }else if(type.equals("Dict")){
+        //DictData newColsWithValue = (DictData) args.get(1);
+
+      }else assert false;
+      return null;
+    }
+  }
+
 
 }
