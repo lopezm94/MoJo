@@ -22,6 +22,10 @@ public class FuncFactory {
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
     functions.put("write_file", new SpecialFunc.WriteFile());
+    functions.put("create_table", new SpecialFunc.CreateTable());
+    functions.put("column_names", new SpecialFunc.ColumnNames());
+    functions.put("add_row!", new SpecialFunc.ColumnNames());
+    functions.put("add_row", new SpecialFunc.ColumnNames());
   }
 
   public boolean contains(String fname) {
