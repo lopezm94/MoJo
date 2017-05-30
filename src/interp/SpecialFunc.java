@@ -6,22 +6,26 @@ import org.apache.commons.csv.CSVPrinter;
 
 public interface SpecialFunc {
 
-  public Data call(ArrayList<Data> args);
-
-  static void checkParams(String fname, int n, ArrayList<Data> args) {
-    if (n != args.size()) {
-      throw new RuntimeException (
-        "Incorrect number of parameters calling function " + fname + "\n"
-        );
-    }
+    public abstract Data call(ArrayList<Data> args);
+    void checkParams(String fname, int n, ArrayList<Data> args);
+    
+    public class ReadFile implements SpecialFunc {
+        private int nparams = 1;
+        private String fname = "read_file";
+        
+        public void checkParams(String fname, int n, ArrayList<Data> args) {
+            if (n != args.size()) {
+                throw new RuntimeException (
+                    "Incorrect number of parameters calling function " + fname + "\n"
+                    );
+            }
+        }
+        
+        public Data call(ArrayList<Data> args) {
+            checkParams(fname, nparams, args);
+            return new VoidData();
+        }
   }
 
-  public class ReadFile implements SpecialFunc {
-    private int nparams = 1;
-    private String fname = "read_file";
-    public Data call(ArrayList<Data> args) {
-      checkParams(fname, nparams, args);
-      return new VoidData();
-    }
-  }
 }
+
