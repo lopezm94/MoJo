@@ -27,6 +27,13 @@ public class VoidData extends Data {
     return new VoidData();
   }
 
+  public static VoidData cast(Data data) {
+    if (!(data instanceof VoidData))
+      throw new RuntimeException("Received " + data.getType() + ", expected VoidData\n");
+    else
+      return (VoidData) data;
+  }
+
   /**
   * Evaluation of expressions with relational operators.
   * @param op Type of operator (token).

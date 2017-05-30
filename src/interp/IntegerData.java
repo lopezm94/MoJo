@@ -37,6 +37,13 @@ public class IntegerData extends Data {
     return new IntegerData(value);
   }
 
+  public static IntegerData cast(Data data) {
+    if (!(data instanceof IntegerData))
+      throw new RuntimeException("Received " + data.getType() + ", expected IntegerData\n");
+    else
+      return (IntegerData) data;
+  }
+
   /**
   * Evaluation of expressions with relational operators.
   * @param op Type of operator (token).

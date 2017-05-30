@@ -49,7 +49,11 @@ public abstract class Data {
   public abstract String getType();
 
   public abstract BooleanData evaluateRelational(int op, Data data);
-  
+
+  public static boolean isType (String type, Data b) {
+      return b.getType() == type;
+  }
+
   public Data evaluateArithmetic(int op, Data data){
     throw new RuntimeException("Data type not supported for arithmetic operations");
   }
@@ -93,16 +97,9 @@ public abstract class Data {
       return new BooleanData(false);
     if (elem != null && elem.matches("[-+]?\\d*\\.?\\d+"))
       return new IntegerData(Integer.parseInt(elem));
-    if (elem.charAt(elem.length()-1) == '"' && elem.charAt(0) == '"')
+    if (elem.charAt(elem.length()-1) == '\'' && elem.charAt(0) == '\'')
       return new StringData(elem.substring(1,elem.length()-1));
     throw new RuntimeException("Can't parse " + elem);
-  }
-
-  public static StringData toStringData(Data data) {
-    if (!(data instanceof StringData))
-      throw new RuntimeException("Received " + data.getType() + ", expected StringData\n");
-    else
-      return (StringData) data;
   }
 
 }

@@ -17,10 +17,11 @@ public class FuncFactory {
 
   private FuncFactory() {
     fnames = new HashSet<String>(Arrays.asList(new String[] {
-      "read_file"
+      "read_file", "write_file"
       }));
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
+    functions.put("write_file", new SpecialFunc.WriteFile());
   }
 
   public boolean contains(String fname) {
@@ -28,6 +29,9 @@ public class FuncFactory {
   }
 
   public SpecialFunc getFunction(String fname) {
-    return functions.get(fname);
+    SpecialFunc func = functions.get(fname);
+    if (func == null)
+      throw new RuntimeException("Function "+fname+" not defined\n");
+    return func;
   }
 }

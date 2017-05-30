@@ -7,3 +7,4 @@ src/parser/*.tokens
 trees/
 tree.ast
 *.kate-swp
+samples/sample1-copy.csv

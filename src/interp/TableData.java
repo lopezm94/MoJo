@@ -15,6 +15,11 @@ public class TableData extends Data {
       labels = new ListData<StringData>();
       table = new ArrayList<DictData>();
     }
+    public TableData(ArrayList ld) {
+      labels = ListData.cast(Data.toData(ld));
+      types = new ArrayList<String>();
+      table = new ArrayList<DictData>();
+    }
     public TableData(ListData<StringData> ld) {
       labels = (ListData<StringData>) ld.deepClone();
       types = new ArrayList<String>();
@@ -58,6 +63,14 @@ public class TableData extends Data {
       return table.toString();
     }
 
+    public ArrayList<String> getLabels() {
+      ArrayList<String> res = new ArrayList<String>();
+      for (int i=0; i<labels.size(); i++) {
+        res.add(labels.get(i).getValue());
+      }
+      return res;
+    }
+
     public Data deepClone() {
       TableData res = new TableData();
       for (DictData row: table) {
@@ -68,6 +81,13 @@ public class TableData extends Data {
         res.table.add(row_copy);
       }
       return res;
+    }
+
+    public static TableData cast(Data data) {
+      if (!(data instanceof TableData))
+        throw new RuntimeException("Received " + data.getType() + ", expected TableData\n");
+      else
+        return (TableData) data;
     }
 
     /**
@@ -91,6 +111,9 @@ public class TableData extends Data {
       return null;
     }
 
+    public DictData get(int row) {
+      return table.get(row);
+    }
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }
@@ -100,7 +123,7 @@ public class TableData extends Data {
           Integer.toString(height()));
       if (!labels.contains(col))
         throw new RuntimeException("Column name: " + col + " doesn't exist");
-      return table.get(row).get(col);
+      return get(row).get(col);
     }
 
     public void put(int row, String col, Data data) {

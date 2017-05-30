@@ -161,8 +161,10 @@ public class Interp {
      */
     private Data executeFunction (String funcname, AslTree args) {
         if (funcFactory.contains(funcname)) {
+          //System.out.println(funcname);
           SpecialFunc sf = funcFactory.getFunction(funcname);
           Data result = sf.call(listArguments(args));
+          //System.out.println()
           return result;
         }
 
@@ -359,7 +361,7 @@ public class Interp {
             case AslLexer.FUNCALL:
                 value = executeFunction(t.getChild(0).getText(), t.getChild(1));
                 assert value != null;
-                if (isType("Void", value)) {
+                if (Data.isType("Void", value)) {
                     throw new RuntimeException ("function expected to return a value");
                 }
                 break;
@@ -483,11 +485,6 @@ public class Interp {
         return (BooleanData) v;
     }
 
-    /** Checks that the data is Type Types. */
-    private boolean isType (String type, Data b) {
-        return b.getType() == type;
-    }
-
     /** Checks that the data is Type type and raises an exception if it is not. */
     private void checkType (String type, Data b) {
         if (b.getType() != type) {
@@ -605,7 +602,7 @@ public class Interp {
         for (int i=0; i < function_nesting; ++i) trace.print("|   ");
         function_nesting--;
         trace.print("return");
-        if (!isType("Void", result)) trace.print(" " + result);
+        if (!Data.isType("Void", result)) trace.print(" " + result);
 
         // Print the value of arguments passed by reference
         AslTree params = f.getChild(1);

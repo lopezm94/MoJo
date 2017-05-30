@@ -66,6 +66,13 @@ public class DictData extends Data {
       return res;
     }
 
+    public static DictData cast(Data data) {
+      if (!(data instanceof DictData))
+        throw new RuntimeException("Received " + data.getType() + ", expected DictData\n");
+      else
+        return (DictData) data;
+    }
+
     /**
     * Evaluation of expressions with relational operators.
     * @param op Type of operator (token).

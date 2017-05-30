@@ -37,6 +37,13 @@ public class BooleanData extends Data {
     return new BooleanData(value);
   }
 
+  public static BooleanData cast(Data data) {
+    if (!(data instanceof BooleanData))
+      throw new RuntimeException("Received " + data.getType() + ", expected BooleanData\n");
+    else
+      return (BooleanData) data;
+  }
+
   /**
   * Evaluation of expressions with relational operators.
   * @param op Type of operator (token).

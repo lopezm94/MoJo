@@ -15,7 +15,7 @@ public class StringData extends Data {
   public String getType() { return "String"; }
 
   public String toString() {
-    return '"'+text+'"';
+    return "'" + text + "'";
   }
 
   public Data deepClone() {
@@ -35,6 +35,13 @@ public class StringData extends Data {
     }
     StringData s = (StringData) o;
     return text.equals(s.text);
+  }
+
+  public static StringData cast(Data data) {
+    if (!(data instanceof StringData))
+      throw new RuntimeException("Received " + data.getType() + ", expected StringData\n");
+    else
+      return (StringData) data;
   }
 
   /**
@@ -57,10 +64,10 @@ public class StringData extends Data {
     }
     return null;
   }
-  
+
     public StringData evaluateArithmetic (int op, Data data) {
       assert "String" != data.getType();
-      
+
       StringData string2 = (StringData) data;
       switch (op) {
           case AslLexer.PLUS:
@@ -68,9 +75,9 @@ public class StringData extends Data {
             return new StringData(text.concat(string2.getValue()));
           default: assert false;
       }
-      
+
       return null;
-      
+
     }
-  
+
 }

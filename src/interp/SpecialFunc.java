@@ -19,9 +19,10 @@ public abstract class SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "read_file";
     public Data call(ArrayList<Data> args) {
-      TableData result = new TableData();
       checkParams(funcname, nparams, args);
-      String filepath = Data.toStringData(args.get(0)).getValue();
+
+      TableData result = new TableData();
+      String filepath = StringData.cast(args.get(0)).getValue();
       //System.out.println(filepath);
       try {
         FileReader fr = new FileReader(new File(filepath));
@@ -30,7 +31,7 @@ public abstract class SpecialFunc {
         CSVRecord header = records.get(0);
         ListData<StringData> labels = new ListData<StringData>();
         for (String col : header) {
-          StringData aux = new StringData(col);
+          StringData aux = new StringData(col.trim());
           result.addColumn(aux);
           labels.add(aux);
         }
@@ -45,6 +46,64 @@ public abstract class SpecialFunc {
         throw new RuntimeException(ex.getMessage());
       }
       return result;
+    }
+  }
+
+  public static class WriteFile extends SpecialFunc {
+    private static final int nparams = 2;
+    private static final String funcname = "write_file";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+
+      TableData table = TableData.cast(args.get(0));
+      String filepath = StringData.cast(args.get(1)).getValue();
+      FileWriter fileWriter = null;
+      CSVPrinter csvFilePrinter = null;
+
+      //Create the CSVFormat object with "\n" as a record delimiter
+      CSVFormat csvFileFormat =
+        CSVFormat.DEFAULT.withRecordSeparator("\n");
+
+      try {
+
+        //initialize FileWriter object
+        fileWriter = new FileWriter(filepath);
+
+        //initialize CSVPrinter object
+        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+
+        //Print header
+        ArrayList<String> labels = table.getLabels();
+        csvFilePrinter.printRecord(labels);
+
+        //Write a rows
+        for (int i=0; i<table.height(); i++) {
+          DictData row = table.get(i);
+          List record = new ArrayList();
+          for (int j=0; j<labels.size(); j++) {
+            Data elem =row.get(labels.get(j));
+            if (Data.isType("Void", elem))
+              record.add("");
+            else
+              record.add(elem.toString());
+          }
+          csvFilePrinter.printRecord(record);
+        }
+      } catch (Exception e) {
+        System.out.println("Error in write_file");
+        e.printStackTrace();
+      } finally {
+        try {
+          fileWriter.flush();
+          fileWriter.close();
+          csvFilePrinter.close();
+        } catch (IOException e) {
+          System.out.println("Error while flushing/closing fileWriter/csvPrinter");
+          e.printStackTrace();
+        }
+      }
+
+      return new VoidData();
     }
   }
 

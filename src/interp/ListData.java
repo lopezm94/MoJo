@@ -71,6 +71,13 @@ public class ListData<T extends Data> extends Data {
       return res;
     }
 
+    public static ListData cast(Data data) {
+      if (!(data instanceof ListData))
+        throw new RuntimeException("Received " + data.getType() + ", expected ListData\n");
+      else
+        return (ListData) data;
+    }
+
     /**
     * Evaluation of expressions with relational operators.
     * @param op Type of operator (token).
@@ -91,21 +98,21 @@ public class ListData<T extends Data> extends Data {
       }
       return null;
     }
-    
+
     public ListData<T> evaluateArithmetic (int op, Data data) {
       assert "List" != data.getType();
-      
+
       ListData<T> list2 = (ListData<T>) data;
       switch (op) {
           case AslLexer.PLUS:
             return concatLists(list2);
           default: assert false;
       }
-      
+
       return null;
-      
+
     }
-    
+
     public ListData<T> concatLists(ListData<T> listdata2){
         ArrayList<T> concat = this.list;
         concat.addAll(listdata2.toArrayList());
