@@ -23,7 +23,6 @@ public abstract class SpecialFunc {
 
       TableData result = new TableData();
       String filepath = StringData.cast(args.get(0)).getValue();
-      //System.out.println(filepath);
       try {
         FileReader fr = new FileReader(new File(filepath));
         CSVParser parser = CSVFormat.DEFAULT.parse(fr);
@@ -107,12 +106,26 @@ public abstract class SpecialFunc {
     }
   }
 
+  //*** Importante: Cambia la definicion inicial de la funcion
+  public static class Sample extends SpecialFunc {
+    private static final int nparams = 2;
+    private static final String funcname = "sample";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+      assert Data.isType("Integer", args.get(0));
+      assert Data.isType("Table", args.get(1));
+      IntegerData n = IntegerData.cast(args.get(0));
+      TableData original = TableData.cast(args.get(1));
+      return original.sample(n);
+    }
+  }
+
   public static class CreateTable extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "create_table";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams, args);
-      assert args.get(0).getType().equals("List");
+      assert Data.isType("List",args.get(0));
       ListData list = (ListData) args.get(0);
       TableData result = new TableData(list);
       return result;
@@ -124,7 +137,7 @@ public abstract class SpecialFunc {
     private static final String funcname = "column_names";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams, args);
-      assert args.get(0).getType().equals("Table");
+      assert Data.isType("Table", args.get(0));
       TableData table = (TableData) args.get(0);
       return table.getColumnNames();
     }
@@ -135,8 +148,8 @@ public abstract class SpecialFunc {
     private static final String funcname = "add_row!";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams, args);
-      assert args.get(0).getType().equals("Table");
-      assert args.get(1).getType().equals("Dict");
+      assert Data.isType("Table", args.get(0));
+      assert Data.isType("Dict", args.get(1));
       TableData table = (TableData) args.get(0);
       DictData dict = (DictData) args.get(1);
       table.addRow(dict);
@@ -149,8 +162,8 @@ public abstract class SpecialFunc {
     private static final String funcname = "add_row";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams, args);
-      assert args.get(0).getType().equals("Table");
-      assert args.get(1).getType().equals("Dict");
+      assert Data.isType("Table",args.get(0));
+      assert Data.isType("Dict", args.get(1));
       TableData table = (TableData) args.get(0);
       DictData dict = (DictData) args.get(1);
       return table.addRowCopy(dict);

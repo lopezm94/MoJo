@@ -22,7 +22,7 @@ public class DictData extends Data {
       put(new StringData(key), data);
     }
     public void put(StringData key, Data data) {
-      dict.put(key, data);
+      dict.put(key, data.deepClone());
     }
 
     public int size() {

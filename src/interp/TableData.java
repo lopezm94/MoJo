@@ -3,6 +3,8 @@ import parser.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class TableData extends Data {
 
@@ -65,7 +67,7 @@ public class TableData extends Data {
 
     public ArrayList<String> getLabels() {
       ArrayList<String> res = new ArrayList<String>();
-      for (int i=0; i<labels.size(); i++) {
+      for (int i=0; i<width(); i++) {
         res.add(labels.get(i).getValue());
       }
       return res;
@@ -79,6 +81,23 @@ public class TableData extends Data {
           row_copy.put(entry.getKey(), entry.getValue().deepClone());
         }
         res.table.add(row_copy);
+      }
+      return res;
+    }
+
+    public TableData sample(IntegerData n) {
+      return sample(n.getValue());
+    }
+    public TableData sample(int n) {
+      if (height() < n)
+        throw new RuntimeException(
+          "Table height "+height()+" is lower than requested sample size "+n+"\n"
+          );
+      TableData tmp = TableData.cast(deepClone());
+      Collections.shuffle(tmp.table);
+      TableData res = new TableData();
+      for (int i=0; i<n; i++) {
+        res.addRow(tmp.get(i));
       }
       return res;
     }
@@ -117,7 +136,7 @@ public class TableData extends Data {
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }
-    
+
     public Data get(int row, StringData col) {
       if (height() <= row)
         throw new RuntimeException("Index out of bounds: " +
@@ -131,14 +150,14 @@ public class TableData extends Data {
         return labels;
     }
 
-    
+
     public void put(int row, String col, Data data) {
       put(row, new StringData(col), data);
     }
     public void put(int row, StringData col, Data data) {
       while (height() <= row)
         addRow();
-      table.get(row).put(col, data);
+      table.get(row).put(col, data.deepClone());
     }
 
     /**Adds a row in the table**/
@@ -146,7 +165,7 @@ public class TableData extends Data {
       table.add(new DictData());
     }
     public void addRow(DictData dd){
-      table.add(dd);
+      table.add(DictData.cast(dd.deepClone()));
     }
 
     /**Returns a table with an added row in the table**/
@@ -166,8 +185,8 @@ public class TableData extends Data {
       int index = labels.indexOf(col);
       String type = "";
       if (index < 0) {
-        index = labels.size();
-        labels.add(col);
+        index = width();
+        labels.add(StringData.cast(col.deepClone()));
         types.add(type);
       } else {
         types.add(index, type);
@@ -181,18 +200,18 @@ public class TableData extends Data {
       else
         type = "Untyped";
       if (index < 0) {
-        index = labels.size();
-        labels.add(col);
+        index = width();
+        labels.add(StringData.cast(col.deepClone()));
         types.add(type);
       } else {
         types.add(index, type);
       }
       assert height() == ld.size();
-      for (int i=0; i<table.size(); i++) {
-          table.get(i).put(col, ld.get(i));
+      for (int i=0; i<height(); i++) {
+          table.get(i).put(col, ld.get(i).deepClone());
       }
     }
-    
+
     /**Returns a table with an added column in the table**/
     public TableData addColumnCopy(StringData col){
       TableData td = (TableData) deepClone();

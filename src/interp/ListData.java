@@ -12,10 +12,10 @@ public class ListData<T extends Data> extends Data {
     }
 
     public void add(T data) {
-      list.add(data);
+      list.add((T) data.deepClone());
     }
     public void add(int i, T data) {
-      list.add(i, data);
+      list.add(i, (T) data.deepClone());
     }
 
     public T get(int i) {

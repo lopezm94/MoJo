@@ -1,5 +1,6 @@
 function main()
     x = read_file("samples/sample1.csv")
-    write_file(x, "samples/sample1-copy.csv")
-    write x
+    tmp = sample(2,x)
+    write_file(tmp, "samples/sample1-copy.csv")
+    write tmp
 end
