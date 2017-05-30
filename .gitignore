@@ -6,3 +6,4 @@ src/parser/*.java
 src/parser/*.tokens
 trees/
 tree.ast
+*.kate-swp

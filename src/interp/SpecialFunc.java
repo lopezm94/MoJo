@@ -3,9 +3,9 @@ import java.io.*;
 import java.util.*;
 import org.apache.commons.csv.*;
 
-public interface SpecialFunc {
+public abstract class SpecialFunc {
 
-  public Data call(ArrayList<Data> args);
+  public abstract Data call(ArrayList<Data> args);
 
   static void checkParams(String funcname, int n, ArrayList<Data> args) {
     if (n != args.size()) {
@@ -15,7 +15,7 @@ public interface SpecialFunc {
     }
   }
 
-  public class ReadFile implements SpecialFunc {
+  public static class ReadFile extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "read_file";
     public Data call(ArrayList<Data> args) {
