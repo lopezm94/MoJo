@@ -95,6 +95,11 @@ public class TableData implements Data {
       return get(row, new StringData(col));
     }
     public Data get(int row, StringData col) {
+      if (height() <= row)
+        throw new RuntimeException("Index out of bounds: " +
+          Integer.toString(height()));
+      if (!labels.contains(col))
+        throw new RuntimeException("Column name: " + col + " doesn't exist");
       return table.get(row).get(col);
     }
 
@@ -102,6 +107,8 @@ public class TableData implements Data {
       put(row, new StringData(col), data);
     }
     public void put(int row, StringData col, Data data) {
+      while (height() <= row)
+        addRow();
       table.get(row).put(col, data);
     }
 

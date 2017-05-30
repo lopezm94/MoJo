@@ -36,18 +36,14 @@ public abstract class SpecialFunc {
         }
         for (int i=1; i<records.size(); i++) {
           CSVRecord record = records.get(i);
-          //System.out.println(record);
           for (int j=0; j<labels.size(); j++) {
-            //System.out.println(record.get(j));
-            //Data elem = Data.parse();
-            //result.put(j,col,elem);
+            Data elem = Data.parse(record.get(j));
+            result.put(i-1,labels.get(j),elem);
           }
         }
-        //System.out.println("Done creating table");
       } catch (Exception ex) {
         throw new RuntimeException(ex.getMessage());
       }
-      //System.out.println(result);
       return result;
     }
   }

@@ -37,6 +37,10 @@ public class ListData<T extends Data> implements Data {
       return list.equals(ld.list);
     }
 
+    public boolean contains(Object o) {
+      return list.contains(o);
+    }
+
     public int size() {
       return list.size();
     }

@@ -79,6 +79,20 @@ public interface Data {
     return res;
   }
 
+  public static Data parse(String elem) {
+    elem = elem.trim();
+    if (elem.length() == 0)
+      return new VoidData();
+    if (elem.equals("true"))
+      return new BooleanData(true);
+    if (elem.equals("false"))
+      return new BooleanData(false);
+    if (elem != null && elem.matches("[-+]?\\d*\\.?\\d+"))
+      return new IntegerData(Integer.parseInt(elem));
+    if (elem.charAt(elem.length()-1) == '"' && elem.charAt(0) == '"')
+      return new StringData(elem.substring(1,elem.length()-1));
+    throw new RuntimeException("Can't parse " + elem);
+  }
 
   public static StringData toStringData(Data data) {
     if (!(data instanceof StringData))
