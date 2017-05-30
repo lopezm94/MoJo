@@ -47,5 +47,29 @@ public abstract class SpecialFunc {
       return result;
     }
   }
+  
+  public static class createTable extends SpecialFunc {
+    private static final int nparams = 1;
+    private static final String funcname = "create_table";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+      assert args.get(0).getType().equals("List");
+      ListData list = (ListData) args.get(0);
+      TableData result = new TableData(list);
+      return result;
+    }
+  }
 
+  public static class columNames extends SpecialFunc {
+    private static final int nparams = 1;
+    private static final String funcname = "column_names";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+      assert args.get(0).getType().equals("Table");
+      TableData table = (TableData) args.get(0);
+      return table.getColumnNames();
+    }
+  }
+  
+  
 }

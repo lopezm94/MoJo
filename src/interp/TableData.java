@@ -94,6 +94,7 @@ public class TableData extends Data {
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }
+    
     public Data get(int row, StringData col) {
       if (height() <= row)
         throw new RuntimeException("Index out of bounds: " +
@@ -103,6 +104,11 @@ public class TableData extends Data {
       return table.get(row).get(col);
     }
 
+    public ListData<StringData> getColumnNames(){
+        return labels;
+    }
+
+    
     public void put(int row, String col, Data data) {
       put(row, new StringData(col), data);
     }
@@ -163,7 +169,7 @@ public class TableData extends Data {
           table.get(i).put(col, ld.get(i));
       }
     }
-
+    
     /**Returns a table with an added column in the table**/
     public TableData addColumnCopy(StringData col){
       TableData td = (TableData) deepClone();
