@@ -168,11 +168,10 @@ public abstract class SpecialFunc {
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparamsMin, nparamsMax, args);
       assert Data.isType("Table",args.get(0));
-      assert Data.isType("Dict", args.get(1));
       TableData table = (TableData) args.get(0);
       TableData newTable = (TableData) table.deepClone();
       for(int i = 1; i<args.size(); ++i){
-        assert args.get(i).getType().equals("Dict");
+        assert Data.isType("Dict", args.get(i));
         DictData row = (DictData) args.get(i);
         newTable.addRow(row);
       }
