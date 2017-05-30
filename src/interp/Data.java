@@ -38,6 +38,9 @@ package interp;
  */
 
 import parser.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public interface Data {
 
@@ -46,5 +49,42 @@ public interface Data {
   public String getType();
 
   public BooleanData evaluateRelational(int op, Data data);
+
+  // Transoform object to Data equivalent
+  public static Data toData(Object o) {
+    if (o == null) return new VoidData();
+    throw new RuntimeException("No Data type not supported for "+o.getClass());
+  }
+  public static Data toData(Boolean data) {
+      return new BooleanData(data);
+  }
+  public static Data toData(Integer data) {
+      return new IntegerData(data);
+  }
+  public static Data toData(String data) {
+      return new StringData(data);
+  }
+  public static Data toData(ArrayList data) {
+    ListData<Data> res = new ListData<Data>();
+    for (int i=0; i<data.size(); i++) {
+      res.add(Data.toData(data.get(i)));
+    }
+    return res;
+  }
+  public static Data toData(HashMap<String, Object> data) {
+    DictData res = new DictData();
+    for (Map.Entry<String, Object> entry : data.entrySet()) {
+      res.put(entry.getKey(), Data.toData(entry.getValue()));
+    }
+    return res;
+  }
+
+
+  public static StringData toStringData(Data data) {
+    if (!(data instanceof StringData))
+      throw new RuntimeException("Received " + data.getType() + ", expected StringData\n");
+    else
+      return (StringData) data;
+  }
 
 }

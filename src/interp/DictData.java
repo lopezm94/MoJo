@@ -11,10 +11,16 @@ public class DictData implements Data {
     public DictData() { dict = new HashMap<StringData, Data>(); }
     public DictData(HashMap<StringData, Data> b) { dict = b; }
 
+    public Data get(String key) {
+      return get(new StringData(key));
+    }
     public Data get(StringData key) {
       return dict.get(key);
     }
 
+    public void put(String key, Data data) {
+      put(new StringData(key), data);
+    }
     public void put(StringData key, Data data) {
       dict.put(key, data);
     }

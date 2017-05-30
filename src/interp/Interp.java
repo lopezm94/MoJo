@@ -162,7 +162,8 @@ public class Interp {
     private Data executeFunction (String funcname, AslTree args) {
         if (funcFactory.contains(funcname)) {
           SpecialFunc sf = funcFactory.getFunction(funcname);
-          return sf.call(listArguments(args));
+          Data result = sf.call(listArguments(args));
+          return result;
         }
 
         // Get the AST of the function
@@ -361,6 +362,10 @@ public class Interp {
                 if (isType("Void", value)) {
                     throw new RuntimeException ("function expected to return a value");
                 }
+                break;
+            // An String
+            case AslLexer.STRING:
+                value = new StringData(t.getStringValue());
                 break;
             default: break;
         }

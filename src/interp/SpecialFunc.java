@@ -1,27 +1,55 @@
 package interp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import java.io.*;
+import java.util.*;
+import org.apache.commons.csv.*;
 
 public interface SpecialFunc {
 
   public Data call(ArrayList<Data> args);
 
-  static void checkParams(String fname, int n, ArrayList<Data> args) {
+  static void checkParams(String funcname, int n, ArrayList<Data> args) {
     if (n != args.size()) {
       throw new RuntimeException (
-        "Incorrect number of parameters calling function " + fname + "\n"
+        "Incorrect number of parameters calling function " + funcname + "\n"
         );
     }
   }
 
   public class ReadFile implements SpecialFunc {
-    private int nparams = 1;
-    private String fname = "read_file";
+    private static final int nparams = 1;
+    private static final String funcname = "read_file";
     public Data call(ArrayList<Data> args) {
-      checkParams(fname, nparams, args);
-      return new VoidData();
+      TableData result = new TableData();
+      checkParams(funcname, nparams, args);
+      String filepath = Data.toStringData(args.get(0)).getValue();
+      //System.out.println(filepath);
+      try {
+        FileReader fr = new FileReader(new File(filepath));
+        CSVParser parser = CSVFormat.DEFAULT.parse(fr);
+        List<CSVRecord> records = parser.getRecords();
+        CSVRecord header = records.get(0);
+        ListData<StringData> labels = new ListData<StringData>();
+        for (String col : header) {
+          StringData aux = new StringData(col);
+          result.addColumn(aux);
+          labels.add(aux);
+        }
+        for (int i=1; i<records.size(); i++) {
+          CSVRecord record = records.get(i);
+          //System.out.println(record);
+          for (int j=0; j<labels.size(); j++) {
+            //System.out.println(record.get(j));
+            //Data elem = Data.parse();
+            //result.put(j,col,elem);
+          }
+        }
+        //System.out.println("Done creating table");
+      } catch (Exception ex) {
+        throw new RuntimeException(ex.getMessage());
+      }
+      //System.out.println(result);
+      return result;
     }
   }
+
 }

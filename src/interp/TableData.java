@@ -91,6 +91,20 @@ public class TableData implements Data {
       return null;
     }
 
+    public Data get(int row, String col) {
+      return get(row, new StringData(col));
+    }
+    public Data get(int row, StringData col) {
+      return table.get(row).get(col);
+    }
+
+    public void put(int row, String col, Data data) {
+      put(row, new StringData(col), data);
+    }
+    public void put(int row, StringData col, Data data) {
+      table.get(row).put(col, data);
+    }
+
     /**Adds a row in the table**/
     public void addRow(){
       table.add(new DictData());

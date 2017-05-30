@@ -1,0 +1,4 @@
+function main()
+    x = read_file("samples/sample1.csv")
+    write x
+end

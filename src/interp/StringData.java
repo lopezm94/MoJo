@@ -15,7 +15,7 @@ public class StringData implements Data {
   public String getType() { return "String"; }
 
   public String toString() {
-    return text;
+    return '"'+text+'"';
   }
 
   public Data deepClone() {
