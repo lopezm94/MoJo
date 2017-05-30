@@ -60,7 +60,7 @@ public abstract class SpecialFunc {
     }
   }
 
-  public static class columNames extends SpecialFunc {
+  public static class columnNames extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "column_names";
     public Data call(ArrayList<Data> args) {

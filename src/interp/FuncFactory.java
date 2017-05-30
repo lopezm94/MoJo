@@ -21,6 +21,8 @@ public class FuncFactory {
       }));
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
+    functions.put("create_table", new SpecialFunc.createTable());
+    functions.put("column_names", new SpecialFunc.columnNames());
   }
 
   public boolean contains(String fname) {
