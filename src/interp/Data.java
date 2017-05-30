@@ -42,13 +42,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Data {
+public abstract class Data {
 
-  public Data deepClone();
+  public abstract Data deepClone();
 
-  public String getType();
+  public abstract String getType();
 
-  public BooleanData evaluateRelational(int op, Data data);
+  public abstract BooleanData evaluateRelational(int op, Data data);
+  
+  public Data evaluateArithmetic(int op, Data data){
+    throw new RuntimeException("Data type not supported for arithmetic operations");
+  }
 
   // Transoform object to Data equivalent
   public static Data toData(Object o) {

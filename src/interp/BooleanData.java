@@ -1,7 +1,7 @@
 package interp;
 import parser.*;
 
-public class BooleanData implements Data {
+public class BooleanData extends Data {
 
   private boolean value;
 

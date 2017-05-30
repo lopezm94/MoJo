@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class TableData implements Data {
+public class TableData extends Data {
 
     private ArrayList<String> types;
     private ListData<StringData> labels;

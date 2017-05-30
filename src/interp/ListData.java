@@ -2,7 +2,7 @@ package interp;
 import parser.*;
 import java.util.ArrayList;
 
-public class ListData<T extends Data> implements Data {
+public class ListData<T extends Data> extends Data {
 
     private ArrayList<T> list;
 
@@ -90,5 +90,25 @@ public class ListData<T extends Data> implements Data {
           default: assert false;
       }
       return null;
+    }
+    
+    public ListData<T> evaluateArithmetic (int op, Data data) {
+      assert "List" != data.getType();
+      
+      ListData<T> list2 = (ListData<T>) data;
+      switch (op) {
+          case AslLexer.PLUS:
+            return concatLists(list2);
+          default: assert false;
+      }
+      
+      return null;
+      
+    }
+    
+    public ListData<T> concatLists(ListData<T> listdata2){
+        ArrayList<T> concat = this.list;
+        concat.addAll(listdata2.toArrayList());
+        return new ListData<T>(concat);
     }
 }

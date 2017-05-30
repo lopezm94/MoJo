@@ -367,6 +367,14 @@ public class Interp {
             case AslLexer.STRING:
                 value = new StringData(t.getStringValue());
                 break;
+            case AslLexer.LIST:
+                ArrayList<Data> llista = new ArrayList<Data>();
+                for(int i=0; i<t.getChildCount(); ++i){
+                    Data list_elem = evaluateExpression(t.getChild(i));
+                    llista.add(list_elem);
+                }
+                value = ListData.toData(llista);
+                break;
             default: break;
         }
 
@@ -423,10 +431,7 @@ public class Interp {
             case AslLexer.DIV:
             case AslLexer.MOD:
                 value2 = evaluateExpression(t.getChild(1));
-                checkType("Integer", value); checkType("Integer", value2);
-                IntegerData int_val1 = (IntegerData) value;
-                IntegerData int_val2 = (IntegerData) value2;
-                value = int_val1.evaluateArithmetic(type, int_val2);
+                value = value.evaluateArithmetic(type, value2);
                 break;
 
             // Boolean operators

@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 
-public class DictData implements Data {
+public class DictData extends Data {
 
     private HashMap<StringData, Data> dict;
 

@@ -1,7 +1,7 @@
 package interp;
 import parser.*;
 
-public class StringData implements Data {
+public class StringData extends Data {
 
   private String text;
 
@@ -57,4 +57,20 @@ public class StringData implements Data {
     }
     return null;
   }
+  
+    public StringData evaluateArithmetic (int op, Data data) {
+      assert "String" != data.getType();
+      
+      StringData string2 = (StringData) data;
+      switch (op) {
+          case AslLexer.PLUS:
+            //String concatenation
+            return new StringData(text.concat(string2.getValue()));
+          default: assert false;
+      }
+      
+      return null;
+      
+    }
+  
 }
