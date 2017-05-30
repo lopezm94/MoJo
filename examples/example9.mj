@@ -1,12 +1,20 @@
 function main()
     a = ["id","name","age"]
     t = create_table(a)
-    dict = {"id":1,"name":"Marc the savage","age":22}
-    add_row!(t,dict)
-    rows = num_rows(t)
-    if(rows = 1)
+
+    row = {"id":1,"name":"Marc the savage"} + {"age":22}
+    row2 = {"name":"Unknown"}
+
+    #TODO : add_row!(t,row1,row2,row3,...)
+    add_row!(t,row)
+    add_row!(t,row2)
+
+    Nrows = num_rows(t)
+
+    if(Nrows = 1)
         write("Working")
     else 
         write("Not working")
     end
+
 end

@@ -26,6 +26,8 @@ public class FuncFactory {
     functions.put("column_names", new SpecialFunc.ColumnNames());
     functions.put("add_row!", new SpecialFunc.ColumnNames());
     functions.put("add_row", new SpecialFunc.ColumnNames());
+    functions.put("add_column!", new SpecialFunc.ColumnNames());
+    functions.put("add_column", new SpecialFunc.ColumnNames());
   }
 
   public boolean contains(String fname) {

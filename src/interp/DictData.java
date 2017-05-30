@@ -76,7 +76,6 @@ public class DictData extends Data {
     /**
     * Evaluation of expressions with relational operators.
     * @param op Type of operator (token).
-    * @param d Second operand.
     * @return A Boolean data with the value of the expression.
     */
     public BooleanData evaluateRelational (int op, Data data) {
@@ -92,5 +91,21 @@ public class DictData extends Data {
           default: assert false;
       }
       return null;
+    }
+
+    //Concatena dos diccionarios
+    public DictData evaluateArithmetic (int op, Data data) {
+      assert "Dict" != data.getType();
+      DictData dict2 = (DictData) data;
+      switch (op) {
+          case AslLexer.PLUS:
+            HashMap<StringData,Data> dict = ((DictData)deepClone()).dict;
+            dict.putAll(dict2.dict);
+            return new DictData(dict);
+          default: assert false;
+      }
+
+      return null;
+
     }
 }

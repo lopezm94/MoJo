@@ -92,8 +92,7 @@ public class TableData extends Data {
 
     /**
     * Evaluation of expressions with relational operators.
-    * @param op Type of operator (token).
-    * @param d Second operand.
+    * @param op Type of operator (token)..
     * @return A Boolean data with the value of the expression.
     */
     public BooleanData evaluateRelational (int op, Data data) {
@@ -151,12 +150,12 @@ public class TableData extends Data {
 
     /**Returns a table with an added row in the table**/
     public TableData addRowCopy(){
-      TableData td = new TableData();
+      TableData td = (TableData) deepClone();
       td.addRow(new DictData());
       return td;
     }
     public TableData addRowCopy(DictData dd){
-      TableData td = new TableData();
+      TableData td = (TableData) deepClone();
       td.addRow(dd);
       return td;
     }

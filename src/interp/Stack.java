@@ -35,7 +35,6 @@ import java.util.ListIterator;
  * Class to represent the memory of the virtual machine of the
  * interpreter. The memory is organized as a stack of activation
  * records and each entry in the activation record contains is a pair
- * <name of variable,value>.
  */
 
 public class Stack {

@@ -47,7 +47,6 @@ public class StringData extends Data {
   /**
   * Evaluation of expressions with relational operators.
   * @param op Type of operator (token).
-  * @param d Second operand.
   * @return A Boolean data with the text of the expression.
   */
   public BooleanData evaluateRelational(int op, Data data) {

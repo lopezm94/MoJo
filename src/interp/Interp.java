@@ -377,6 +377,16 @@ public class Interp {
                 }
                 value = ListData.toData(llista);
                 break;
+            case AslLexer.DICT:
+                HashMap<StringData,Data> dict = new HashMap<StringData,Data>();
+                StringData col; Data d;
+                for(int i = 0; i<t.getChildCount(); i+=2){
+                   col = (StringData) evaluateExpression(t.getChild(i));
+                   d = evaluateExpression(t.getChild(i+1));
+                   dict.put(col,d);
+                }
+                value = new DictData(dict);
+                break;  
             default: break;
         }
 
