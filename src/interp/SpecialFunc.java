@@ -71,5 +71,31 @@ public abstract class SpecialFunc {
     }
   }
   
+   public static class addRow extends SpecialFunc {
+    private static final int nparams = 2;
+    private static final String funcname = "add_row!";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+      assert args.get(0).getType().equals("Table");
+      assert args.get(1).getType().equals("Dict");
+      TableData table = (TableData) args.get(0);
+      DictData dict = (DictData) args.get(1);
+      table.addRow(dict);
+      return table;
+    }
+  }
+  
+   public static class addRowCopy extends SpecialFunc {
+    private static final int nparams = 1;
+    private static final String funcname = "add_row";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, args);
+      assert args.get(0).getType().equals("Table");
+      assert args.get(1).getType().equals("Dict");
+      TableData table = (TableData) args.get(0);
+      DictData dict = (DictData) args.get(1);
+      return table.addRowCopy(dict);
+    }
+  }
   
 }

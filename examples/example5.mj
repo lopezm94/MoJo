@@ -1,10 +1,10 @@
 function main()
     column_names = ["name", "surname"] + ["age", "skill"] # Concatenation
     x = create_table(column_names) # El tipo de las columnas se defininira cuando se añada un elemento
-    add_row!(x, ["Jon", "Snow", 26, "Knowing nothing"])
-    add_row!(x, ["Sansa", "Stark", 21, "Inmortality"])
+    add_row!(x, {"name":"Jon", "surname":"Snow", "age":26, "skill":"Knowing nothing"})
+    add_row!(x, {"name":"Sansa", "surname":"Stark", "age":21, "skill":"Inmortality"})
     add_column!(x, ["lorey money"])
-    add_row!(x, ["Marc", "Ortiz", 22, "Making neural networks and playing basket", 1000000]) # Si el tamaño de la lista es distinto al numero de columnas: ERROR
+    add_row!(x, {"name":"Marc", "surname":"Ortiz", "age":22, "skill":"Making neural networks and playing basket", "lorey money":1000000}) # Si el tamaño de la lista es distinto al numero de columnas: ERROR
     bankrupt = true
 
     if (bankrupt)

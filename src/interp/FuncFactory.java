@@ -23,6 +23,8 @@ public class FuncFactory {
     functions.put("read_file", new SpecialFunc.ReadFile());
     functions.put("create_table", new SpecialFunc.createTable());
     functions.put("column_names", new SpecialFunc.columnNames());
+    functions.put("add_row!", new SpecialFunc.columnNames());
+    functions.put("add_row", new SpecialFunc.columnNames());
   }
 
   public boolean contains(String fname) {
