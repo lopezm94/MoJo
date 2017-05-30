@@ -19,8 +19,9 @@ MANIFEST=	$(BIN)/$(TARGET)_Manifest.txt
 # Libraries and Classpath
 LIB_ANTLR =	$(LIBDIR)/antlr-3.4-complete.jar
 LIB_CLI =	$(LIBDIR)/commons-cli-1.2.jar
-CLASSPATH=	$(LIB_ANTLR):$(LIB_CLI)
-JARPATH=	"$(LIB_ANTLR) $(LIB_CLI)"
+LIB_CSV =	$(LIBDIR)/commons-csv-1.4.jar
+CLASSPATH=	$(LIB_ANTLR):$(LIB_CLI):$(LIB_CSV)
+JARPATH=	"$(LIB_ANTLR) $(LIB_CLI) $(LIB_CSV)"
 
 
 # Distribution (tar) file
@@ -52,6 +53,8 @@ INTERP_SRC =	$(INTERP)/Interp.java \
 				$(INTERP)/DictData.java \
 				$(INTERP)/TableData.java \
 				$(INTERP)/StringData.java \
+				$(INTERP)/FuncFactory.java \
+				$(INTERP)/SpecialFunc.java \
 				$(INTERP)/$(TARGET)Tree.java \
 				$(INTERP)/AslTreeAdaptor.java
 

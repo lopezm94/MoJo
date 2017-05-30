@@ -38,6 +38,9 @@ import java.io.*;
 
 public class Interp {
 
+    /** Special functions factory **/
+    private FuncFactory funcFactory;
+
     /** Memory of the virtual machine. */
     private Stack Stack;
 
@@ -69,6 +72,7 @@ public class Interp {
      */
     public Interp(AslTree T, String tracefile) {
         assert T != null;
+        funcFactory = FuncFactory.getinstance();
         MapFunctions(T);  // Creates the table to map function names into AST nodes
         PreProcessAST(T); // Some internal pre-processing ot the AST
         Stack = new Stack(); // Creates the memory of the virtual machine
@@ -156,6 +160,11 @@ public class Interp {
      * @return The data returned by the function.
      */
     private Data executeFunction (String funcname, AslTree args) {
+        if (funcFactory.contains(funcname)) {
+          SpecialFunc sf = funcFactory.getFunction(funcname);
+          return sf.call(listArguments(args));
+        }
+
         // Get the AST of the function
         AslTree f = FuncName2Tree.get(funcname);
         if (f == null) throw new RuntimeException(" function " + funcname + " not declared");
@@ -519,6 +528,27 @@ public class Interp {
                 // Find the variable and pass the reference
                 Data v = Stack.getVariable(a.getText());
                 Params.add(i,v);
+            }
+        }
+        return Params;
+    }
+    private ArrayList<Data> listArguments (AslTree args) {
+        // Create the list of parameters
+        ArrayList<Data> Params = new ArrayList<Data> ();
+        int nargs = (args == null) ? 0 : args.getChildCount();
+
+        // Checks the compatibility of the parameters passed by
+        // reference and calculates the values and references of
+        // the parameters.
+        for (int i = 0; i < nargs; ++i) {
+            AslTree a = args.getChild(i); // Arguments passed by the caller
+            setLineNumber(a);
+            if (a.getType() == AslLexer.ID) {
+              // Find the variable and pass the reference
+              Data v = Stack.getVariable(a.getText());
+              Params.add(i,v);
+            } else {
+              Params.add(i,evaluateExpression(a));
             }
         }
         return Params;
