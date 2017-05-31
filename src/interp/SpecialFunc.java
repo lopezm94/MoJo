@@ -44,8 +44,6 @@ public abstract class SpecialFunc {
       } catch (Exception ex) {
         throw new RuntimeException(ex.getMessage());
       }
-      System.out.println("Read");
-      System.out.println(result.getLabels());
       return result;
     }
   }
@@ -76,7 +74,7 @@ public abstract class SpecialFunc {
         //Print header
         ArrayList<String> labels = table.getLabels();
         csvFilePrinter.printRecord(labels);
-        System.out.println(labels);
+
         //Write a rows
         for (int i=0; i<table.height(); i++) {
           DictData row = table.get(i);
@@ -144,11 +142,7 @@ public abstract class SpecialFunc {
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparamsMin, nparamsMax, args);
       assert Data.isType("Table", args.get(0));
-      System.out.println("Merge");
-      System.out.println(args.get(0));
       TableData res = TableData.cast(args.get(0));
-      System.out.println(res.getLabels());
-      System.out.println("Hola");
       for (int i=1; i<args.size(); i++) {
         assert Data.isType("Table", args.get(i));
         res.merge(TableData.cast(args.get(i)));

@@ -69,6 +69,7 @@ public class ListData<T extends Data> extends Data {
       for (T data: list) {
         res.list.add((T) data.deepClone());
       }
+      assert equals(res);
       return res;
     }
 

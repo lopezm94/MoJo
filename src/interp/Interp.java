@@ -306,7 +306,7 @@ public class Interp {
                 AslTree v = t.getChild(0);
                 // Special case for strings
                 if (v.getType() == AslLexer.STRING) {
-                    System.out.print(v.getStringValue());
+                    System.out.format(v.getStringValue());
                     return null;
                 }
 

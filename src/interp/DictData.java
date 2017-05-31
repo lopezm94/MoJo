@@ -63,6 +63,7 @@ public class DictData extends Data {
       for (Map.Entry<StringData, Data> entry : dict.entrySet()) {
         res.dict.put(entry.getKey(), entry.getValue().deepClone());
       }
+      assert equals(res);
       return res;
     }
 

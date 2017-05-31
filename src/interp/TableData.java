@@ -17,14 +17,15 @@ public class TableData extends Data {
       labels = new ListData<StringData>();
       table = new ArrayList<DictData>();
     }
-    public TableData(ArrayList ld) {
-      labels = ListData.cast(Data.toData(ld));
-      types = new ArrayList<String>();
-      table = new ArrayList<DictData>();
-    }
     public TableData(ListData<StringData> ld) {
       labels = (ListData<StringData>) ld.deepClone();
       types = new ArrayList<String>();
+      table = new ArrayList<DictData>();
+    }
+    public TableData(ListData<StringData> ld, ArrayList<String> t) {
+      labels = (ListData<StringData>) ld.deepClone();
+      types = new ArrayList<String>();
+      for (int i=0; i<t.size(); i++) { types.add(t.get(i)); }
       table = new ArrayList<DictData>();
     }
 
@@ -74,7 +75,7 @@ public class TableData extends Data {
     }
 
     public Data deepClone() {
-      TableData res = new TableData();
+      TableData res = new TableData(labels, types);
       for (DictData row: table) {
         DictData row_copy = new DictData();
         for (Map.Entry<StringData, Data> entry : row.entrySet()) {
@@ -82,6 +83,7 @@ public class TableData extends Data {
         }
         res.table.add(row_copy);
       }
+      assert equals(res);
       return res;
     }
 
@@ -111,7 +113,7 @@ public class TableData extends Data {
           );
       TableData tmp = TableData.cast(deepClone());
       Collections.shuffle(tmp.table);
-      TableData res = new TableData();
+      TableData res = new TableData(tmp.labels,tmp.types);
       for (int i=0; i<n; i++) {
         res.addRow(tmp.get(i));
       }
