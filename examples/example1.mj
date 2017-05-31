@@ -1,12 +1,14 @@
 function mergesort(table1,table2)   # Esto no es un mergesort de verdad
     tmp = merge(table1, table2)
+    write_file(tmp, "samples/example1.out")
     return sort(tmp)
 end
 
 function main()     # Se ejecuta por defecto
-    x = read_file("sample1.csv")
-    y = read_file("sample2.csv")
+    x = read_file("samples/sample1.csv")
+    y = read_file("samples/sample2.csv")
     tmp = mergesort(x,y)
-    tmp = sample(20,tmp)
-    write_file(tmp, "out.csv")
+    tmp = sample(8,tmp)
+    write tmp
+    #write_file(tmp, "samples/example1.out")
 end

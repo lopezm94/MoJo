@@ -19,7 +19,7 @@ public class FuncFactory {
     fnames = new HashSet<String>(Arrays.asList(new String[] {
       "read_file", "write_file", "create_table", "column_names",
       "add_row", "add_row!", "sample", "add_column", "add_column!",
-      "sort"
+      "sort", "merge"
       }));
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
@@ -31,7 +31,8 @@ public class FuncFactory {
     functions.put("sample", new SpecialFunc.Sample());
     functions.put("add_column!", new SpecialFunc.AddColumn());
     functions.put("add_column", new SpecialFunc.AddColumnCopy());
-    functions.put("add_column", new SpecialFunc.Sort());
+    functions.put("sort", new SpecialFunc.Sort());
+    functions.put("merge", new SpecialFunc.Merge());
   }
 
   public boolean contains(String fname) {

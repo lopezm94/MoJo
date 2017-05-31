@@ -1,3 +1,9 @@
-Index, Name, Married
-0, 'Muhammed',
-1, 'Ali', true
+Index, Name, Odd
+0, 'A', false
+1, 'B', true
+2, 'C', false
+3, 'D', true
+4, 'E', false
+5, 'F', true
+6, 'G', false
+7, 'H', true

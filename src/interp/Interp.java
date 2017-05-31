@@ -386,7 +386,7 @@ public class Interp {
                    dict.put(col,d);
                 }
                 value = new DictData(dict);
-                break;  
+                break;
             default: break;
         }
 
