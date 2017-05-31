@@ -22,6 +22,10 @@ public class ListData<T extends Data> extends Data {
     public T get(int i) {
       return list.get(i);
     }
+    
+    public T get(IntegerData i){
+        return list.get(i.getValue());
+    }
 
     @Override
     public int hashCode() {

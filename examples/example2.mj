@@ -5,7 +5,7 @@ function main()
     nrows = num_rows(tmp)
     names = column_names(tmp)
     while (i < nrows)   # Acceso a la tabla por numero de row y nombre de columna
-        while (j < length(names))
+        while (j < num_cols(tmp))
             # Si los tipos no concuerdan activa una excepcion de tipos
             tmp[i,names[j]] = i+j
             j = j + 1

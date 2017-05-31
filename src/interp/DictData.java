@@ -18,7 +18,7 @@ public class DictData extends Data {
       Data val = dict.containsKey(key) ? dict.get(key) : new VoidData();
       return val;
     }
-
+    
     public void put(String key, Data data) {
       put(new StringData(key), data);
     }

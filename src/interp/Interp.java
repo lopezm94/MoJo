@@ -251,6 +251,7 @@ public class Interp {
             case AslLexer.ASSIGN: {
                 value = evaluateExpression(t.getChild(1));
                 Stack.defineVariable (t.getChild(0).getText(), value);
+                //FALTA MODIFICAR ACCESSO
                 return null;
             }
 
@@ -386,6 +387,16 @@ public class Interp {
                    dict.put(col,d);
                 }
                 value = new DictData(dict);
+                break;
+            case AslLexer.ACCESS:
+                Data container = evaluateExpression(t.getChild(0));
+                Data i = evaluateExpression(t.getChild(1));
+                value = container.get(i);
+                if(t.getChildCount() > 2){
+                    //Acceso a elemento de una array [[a,b,c]] o a elemento de una tabla [{"id":0, "name":"Marc"}]
+                    Data j = evaluateExpression(t.getChild(2));
+                    value = value.get(j);
+                }
                 break;
             default: break;
         }

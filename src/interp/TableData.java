@@ -150,6 +150,11 @@ public class TableData extends Data {
     public DictData get(int row) {
       return table.get(row);
     }
+    
+    public DictData get(IntegerData row){
+      return get(row.getValue());
+    }
+    
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }

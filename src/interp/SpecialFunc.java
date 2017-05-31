@@ -188,6 +188,30 @@ public abstract class SpecialFunc {
       
     }
   }
+  
+  public static class GetNumCols extends SpecialFunc{
+    private static final int nparams = 1;
+    private static final String funcname = "num_columns";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams , nparams , args);
+      assert args.get(0).getType().equals("Table");
+      TableData table = (TableData) args.get(0);
+      return new IntegerData(table.width());
+      
+    }
+  }
+  
+  public static class GetListLength extends SpecialFunc{
+    private static final int nparams = 1;
+    private static final String funcname = "length";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams , nparams , args);
+      assert args.get(0).getType().equals("List");
+      ListData list = (ListData) args.get(0);
+      return new IntegerData(list.size());
+      
+    }
+  }
 
    public static class AddNewRow extends SpecialFunc {
     private static final int nparamsMin = 1;

@@ -57,6 +57,22 @@ public abstract class Data {
   public Data evaluateArithmetic(int op, Data data){
     throw new RuntimeException("Data type not supported for arithmetic operations");
   }
+  
+  public Data get(int index){
+    throw new RuntimeException("Data type not supported to be indexed by integer");
+  }
+  
+  public Data get(IntegerData index){
+    throw new RuntimeException("Data type not supported to be indexed by integer");
+  }
+  
+  public Data get(StringData index){
+    throw new RuntimeException("Data type not supported to be indexed by string");
+  }
+  
+  public Data get(Object o){
+    throw new RuntimeException("Data type " + o.getClass() + " not supported for indexing");
+  }
 
   // Transoform object to Data equivalent
   public static Data toData(Object o) {
