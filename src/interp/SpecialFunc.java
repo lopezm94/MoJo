@@ -80,7 +80,7 @@ public abstract class SpecialFunc {
           DictData row = table.get(i);
           List record = new ArrayList();
           for (int j=0; j<table.width(); j++) {
-            Data elem =row.get(labels.get(j));
+            Data elem = row.get(labels.get(j));
             if (Data.isType("Void", elem))
               record.add("");
             else
@@ -105,6 +105,21 @@ public abstract class SpecialFunc {
       return new VoidData();
     }
   }
+  
+
+  
+  public static class CreateNewTable extends SpecialFunc {
+    private static final int nparams = 1;
+    private static final String funcname = "create_table";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams, nparams, args);
+      assert Data.isType("List",args.get(0));
+      ListData list = (ListData) args.get(0);
+      TableData result = new TableData(list);
+      return result;
+    }
+  }
+
 
   //*** Importante: Cambia la definicion inicial de la funcion
   public static class Sample extends SpecialFunc {
@@ -138,7 +153,7 @@ public abstract class SpecialFunc {
   public static class Merge extends SpecialFunc {
     private static final int nparamsMin = 1;
     private static final int nparamsMax = 10;
-    private static final String funcname = "sort";
+    private static final String funcname = "merge";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparamsMin, nparamsMax, args);
       assert Data.isType("Table", args.get(0));
@@ -150,20 +165,8 @@ public abstract class SpecialFunc {
       return res;
     }
   }
-
-  public static class CreateTable extends SpecialFunc {
-    private static final int nparams = 1;
-    private static final String funcname = "create_table";
-    public Data call(ArrayList<Data> args) {
-      checkParams(funcname, nparams, nparams, args);
-      assert Data.isType("List",args.get(0));
-      ListData list = (ListData) args.get(0);
-      TableData result = new TableData(list);
-      return result;
-    }
-  }
-
-  public static class ColumnNames extends SpecialFunc {
+  
+  public static class GetColumnNames extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "column_names";
     public Data call(ArrayList<Data> args) {
@@ -173,8 +176,20 @@ public abstract class SpecialFunc {
       return table.getColumnNames();
     }
   }
+  
+  public static class GetNumRows extends SpecialFunc{
+    private static final int nparams = 1;
+    private static final String funcname = "num_rows";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams , nparams , args);
+      assert args.get(0).getType().equals("Table");
+      TableData table = (TableData) args.get(0);
+      return new IntegerData(table.height());
+      
+    }
+  }
 
-   public static class AddRow extends SpecialFunc {
+   public static class AddNewRow extends SpecialFunc {
     private static final int nparamsMin = 1;
     private static final int nparamsMax = 10;
     private static final String funcname = "add_row!";
@@ -192,7 +207,7 @@ public abstract class SpecialFunc {
     }
   }
 
-   public static class AddRowCopy extends SpecialFunc {
+   public static class AddNewRowCopy extends SpecialFunc {
     private static final int nparamsMin = 1;
     private static final int nparamsMax = 10;
     private static final String funcname = "add_row";
@@ -210,8 +225,8 @@ public abstract class SpecialFunc {
     }
   }
 
-  public static class AddColumn extends SpecialFunc{
-    private static final int nparams = 1;
+  public static class AddNewColumn extends SpecialFunc{
+    private static final int nparams = 2;
     private static final String funcname = "add_column!";
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams, nparams, args);
@@ -232,7 +247,7 @@ public abstract class SpecialFunc {
     }
   }
 
-  public static class AddColumnCopy extends SpecialFunc{
+  public static class AddNewColumnCopy extends SpecialFunc{
     private static final int nparams = 2;
     private static final String funcname = "add_column";
     public Data call(ArrayList<Data> args) {
@@ -254,6 +269,7 @@ public abstract class SpecialFunc {
       return null;
     }
   }
+
 
 
 }

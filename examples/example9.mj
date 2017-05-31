@@ -4,17 +4,14 @@ function main()
 
     row = {"id":1,"name":"Marc the savage"} + {"age":22}
     row2 = {"name":"Unknown"}
-
-    #TODO : add_row!(t,row1,row2,row3,...)
-    add_row!(t,row)
-    add_row!(t,row2)
+    add_row!(t,row,row2,{"name":"Stephan", "age":32})
 
     Nrows = num_rows(t)
 
-    if(Nrows = 1)
-        write("Working")
+    if(Nrows = 3)
+        write("Working! ")
     else 
-        write("Not working")
+        write("Not working! \n\n")
     end
 
 end

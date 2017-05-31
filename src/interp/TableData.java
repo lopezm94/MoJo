@@ -87,13 +87,13 @@ public class TableData extends Data {
       return res;
     }
 
-    public void merge(TableData otable) {
-      if (!otable.labels.equals(labels))
+    public void merge(TableData table) {
+      if (!table.labels.equals(labels))
         throw new RuntimeException("Labels must be equal and in the " +
           "exact same order to be able to merge"
           );
-      for (int i=0; i<otable.height(); i++) {
-        addRow(otable.get(i));
+      for (int i=0; i<table.height(); i++) {
+        addRow(table.get(i));
       }
     }
 

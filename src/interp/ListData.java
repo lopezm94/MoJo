@@ -107,7 +107,7 @@ public class ListData<T extends Data> extends Data {
     }
 
     public ListData<T> evaluateArithmetic (int op, Data data) {
-      assert "List" != data.getType();
+      assert "List".equals(data.getType());
 
       ListData<T> list2 = (ListData<T>) data;
       switch (op) {

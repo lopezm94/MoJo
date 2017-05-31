@@ -15,7 +15,8 @@ public class DictData extends Data {
       return get(new StringData(key));
     }
     public Data get(StringData key) {
-      return dict.get(key);
+      Data val = dict.containsKey(key) ? dict.get(key) : new VoidData();
+      return val;
     }
 
     public void put(String key, Data data) {
@@ -95,8 +96,8 @@ public class DictData extends Data {
     }
 
     //Concatena dos diccionarios
-    public DictData evaluateArithmetic (int op, Data data) {
-      assert "Dict" != data.getType();
+    public DictData evaluateArithmetic (int op, Data data) {    
+      assert "Dict".equals(data.getType());
       DictData dict2 = (DictData) data;
       switch (op) {
           case AslLexer.PLUS:

@@ -19,20 +19,21 @@ public class FuncFactory {
     fnames = new HashSet<String>(Arrays.asList(new String[] {
       "read_file", "write_file", "create_table", "column_names",
       "add_row", "add_row!", "sample", "add_column", "add_column!",
-      "sort", "merge"
+      "sort", "merge", "num_rows",
       }));
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
     functions.put("write_file", new SpecialFunc.WriteFile());
-    functions.put("create_table", new SpecialFunc.CreateTable());
-    functions.put("column_names", new SpecialFunc.ColumnNames());
-    functions.put("add_row!", new SpecialFunc.AddRow());
-    functions.put("add_row", new SpecialFunc.AddRowCopy());
+    functions.put("create_table", new SpecialFunc.CreateNewTable());
+    functions.put("column_names", new SpecialFunc.GetColumnNames());
+    functions.put("add_row!", new SpecialFunc.AddNewRow());
+    functions.put("add_row", new SpecialFunc.AddNewRowCopy());
     functions.put("sample", new SpecialFunc.Sample());
-    functions.put("add_column!", new SpecialFunc.AddColumn());
-    functions.put("add_column", new SpecialFunc.AddColumnCopy());
+    functions.put("add_column!", new SpecialFunc.AddNewColumn());
+    functions.put("add_column", new SpecialFunc.AddNewColumnCopy());
     functions.put("sort", new SpecialFunc.Sort());
     functions.put("merge", new SpecialFunc.Merge());
+    functions.put("num_rows", new SpecialFunc.GetNumRows());
   }
 
   public boolean contains(String fname) {

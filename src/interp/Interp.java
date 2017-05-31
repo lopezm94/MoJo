@@ -375,7 +375,7 @@ public class Interp {
                     Data list_elem = evaluateExpression(t.getChild(i));
                     llista.add(list_elem);
                 }
-                value = ListData.toData(llista);
+                value = new ListData<Data>(llista);
                 break;
             case AslLexer.DICT:
                 HashMap<StringData,Data> dict = new HashMap<StringData,Data>();
