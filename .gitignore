@@ -8,3 +8,5 @@ trees/
 tree.ast
 *.kate-swp
 samples/*.out
+*.pdf
+*.out
