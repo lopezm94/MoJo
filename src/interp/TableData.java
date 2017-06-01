@@ -61,6 +61,13 @@ public class TableData extends Data {
     public String getType() {
       return "Table";
     }
+    
+    public void setValue (Data d){
+        TableData t2 = cast(d);
+        types = (ArrayList<String>) t2.types.clone();
+        labels = (ListData<StringData>) t2.labels.deepClone();
+        table = (ArrayList<DictData>) t2.table.clone();
+    }
 
     public String toString() {
       return table.toString();

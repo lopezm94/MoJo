@@ -27,6 +27,12 @@ public class DictData extends Data {
     public void put(StringData key, Data data) {
       dict.put(key, data.deepClone());
     }
+    
+    public void setValue(Data d){
+        if(!d.getType().equals("Dict")) throw new RuntimeException("Received " + d.getType() + ", expected DictData\n"); 
+        DictData d2 = (DictData) d;
+        dict = (HashMap<StringData, Data>) d2.dict.clone();
+    }
 
     public int size() {
       return dict.size();

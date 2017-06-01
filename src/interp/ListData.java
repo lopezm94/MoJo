@@ -29,6 +29,11 @@ public class ListData<T extends Data> extends Data {
         IntegerData i = (IntegerData) d;
         return get(i.getValue());
     }
+    
+    public void setValue(Data d){
+        ListData<Data> l2 = cast(d);
+        list = (ArrayList<T>) l2.list.clone();
+    }
 
     @Override
     public int hashCode() {

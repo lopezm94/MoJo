@@ -17,4 +17,6 @@ function main()
     write("         People from Spain are: ")
     write(Countries[1,2,1])
     
+    column_names = []
+    
 end

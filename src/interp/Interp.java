@@ -250,8 +250,14 @@ public class Interp {
             // Assignment
             case AslLexer.ASSIGN: {
                 value = evaluateExpression(t.getChild(1));
-                Stack.defineVariable (t.getChild(0).getText(), value);
-                //FALTA MODIFICAR ACCESSO
+                if(t.getChild(0).getType() == AslLexer.ACCESS){
+                    AslTree subtree = t.getChild(0);
+                    Data container = Stack.getVariable(subtree.getChild(0).getText());
+                    Data element = accessData(subtree, container, true);
+                    element.setValue(value);
+                }else{
+                    Stack.defineVariable (t.getChild(0).getText(), value);
+                }
                 return null;
             }
 
@@ -390,13 +396,7 @@ public class Interp {
                 break;
             case AslLexer.ACCESS:
                 Data container = Stack.getVariable(t.getChild(0).getText()).deepClone();
-                ArrayList<Data> indexes = listArguments(t.getChild(1));
-                Data i = indexes.get(0);
-                value = container.get(i);
-                for(int dims = 1; dims < indexes.size(); ++dims){
-                    Data j = indexes.get(dims);
-                    value = value.get(j);
-                }
+                value = accessData(t,container,false);
                 break;
             default: break;
         }
@@ -580,6 +580,23 @@ public class Interp {
             }
         }
         return Params;
+    }
+    
+    private Data accessData(AslTree t, Data container, boolean assign){
+        Data value;
+        ArrayList<Data> indexes = listArguments(t.getChild(1));
+        Data i = indexes.get(0);
+        Data parent = container;
+        value = container.get(i);
+        for(int dims = 1; dims < indexes.size(); ++dims){
+            parent = value;
+            Data j = indexes.get(dims);
+            value = value.get(j);
+        }
+        if(assign && parent.getType().equals("Table") && value.getType().equals("Dict")){
+            throw new RuntimeException("Cannot modify rows from table");
+        }
+        return value;
     }
 
     /**

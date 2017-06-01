@@ -54,6 +54,10 @@ public abstract class Data {
       return b.getType() == type;
   }
 
+  public void setValue(Data d){
+    throw new RuntimeException("Not possible to set value to data type " + d.getClass());
+  }
+  
   public Data evaluateArithmetic(int op, Data data){
     throw new RuntimeException("Data type not supported for arithmetic operations");
   }
