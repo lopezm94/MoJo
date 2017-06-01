@@ -106,6 +106,7 @@ public class TableData extends Data {
     public TableData sample(IntegerData n) {
       return sample(n.getValue());
     }
+    
     public TableData sample(int n) {
       if (height() < n)
         throw new RuntimeException(
@@ -148,10 +149,13 @@ public class TableData extends Data {
     }
 
     public DictData get(int row) {
+      if(row >= height()) throw new RuntimeException("Table height "+height()+" is lower than requested row "+row+"\n");
       return table.get(row);
     }
     
-    public DictData get(IntegerData row){
+    public DictData get(Data d){
+      assert d.getType().equals("Integer");
+      IntegerData row = (IntegerData) d;
       return get(row.getValue());
     }
     

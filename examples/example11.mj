@@ -1,0 +1,20 @@
+function main()
+    column_names = ["name", "surname"] + ["age", "skill"] # Concatenation
+    Countries = ["Info",[["China","Planty"],["North Korea","Dangerous"],["Spain","Lazy"]]]
+    
+    x = create_table(column_names) # El tipo de las columnas se defininira cuando se añada un elemento
+    add_row!(x, {"name":"Jon", "surname":"Snow", "age":26, "skill":"Knowing nothing"})
+    
+    j = 0
+    write("Content of the table:  ")
+    
+    while (j<num_columns(x))
+        write(x[0,column_names[j]])
+        write(", ")
+        j = j + 1
+    end
+    
+    write("         People from Spain are: ")
+    write(Countries[1,2,1])
+    
+end

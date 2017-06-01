@@ -20,11 +20,14 @@ public class ListData<T extends Data> extends Data {
     }
 
     public T get(int i) {
+      if(i>=list.size()) throw new RuntimeException("List lenght "+list.size()+" is lower than requested position "+i+"\n");
       return list.get(i);
     }
     
-    public T get(IntegerData i){
-        return list.get(i.getValue());
+    public T get(Data d){
+        assert d.getType().equals("Integer");
+        IntegerData i = (IntegerData) d;
+        return get(i.getValue());
     }
 
     @Override

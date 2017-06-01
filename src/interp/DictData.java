@@ -14,7 +14,9 @@ public class DictData extends Data {
     public Data get(String key) {
       return get(new StringData(key));
     }
-    public Data get(StringData key) {
+    public Data get(Data d) {
+      assert d.getType().equals("String");
+      StringData key = (StringData) d;
       Data val = dict.containsKey(key) ? dict.get(key) : new VoidData();
       return val;
     }

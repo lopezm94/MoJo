@@ -389,12 +389,12 @@ public class Interp {
                 value = new DictData(dict);
                 break;
             case AslLexer.ACCESS:
-                Data container = evaluateExpression(t.getChild(0));
-                Data i = evaluateExpression(t.getChild(1));
+                Data container = Stack.getVariable(t.getChild(0).getText()).deepClone();
+                ArrayList<Data> indexes = listArguments(t.getChild(1));
+                Data i = indexes.get(0);
                 value = container.get(i);
-                if(t.getChildCount() > 2){
-                    //Acceso a elemento de una array [[a,b,c]] o a elemento de una tabla [{"id":0, "name":"Marc"}]
-                    Data j = evaluateExpression(t.getChild(2));
+                for(int dims = 1; dims < indexes.size(); ++dims){
+                    Data j = indexes.get(dims);
                     value = value.get(j);
                 }
                 break;

@@ -87,7 +87,9 @@ public class IntegerData extends Data {
   * @param d Second operand.value == 1
   * @return A Boolean data with the value of the expression.
   */
-  public IntegerData evaluateArithmetic(int op, IntegerData d) {
+  public IntegerData evaluateArithmetic(int op, Data data) {
+    assert data.getType().equals("Integer");
+    IntegerData d = (IntegerData) data;
     switch (op) {
         case AslLexer.PLUS:
           return new IntegerData(value + d.value);
