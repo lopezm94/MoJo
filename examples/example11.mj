@@ -6,15 +6,15 @@ function main()
     add_row!(x, {"name":"Jon", "surname":"Snow", "age":26, "skill":"Knowing nothing"})
     
     j = 0
-    write("Content of the table:  ")
+    write("Content of the table:  %n")
     
     while (j<num_columns(x))
         write(x[0,column_names[j]])
         write(", ")
         j = j + 1
     end
-    
-    write("         People from Spain are: ")
+    write("%n")
+    write("People from Spain are: ")
     write(Countries[1,2,1])
     
     column_names = []

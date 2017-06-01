@@ -264,8 +264,11 @@ public abstract class SpecialFunc {
         }
         return table;
       }else if(type.equals("Dict")){
-        //DictData newColsWithValue = (DictData) args.get(1);
-
+        DictData newCols = (DictData) args.get(1);
+        for(Map.Entry<StringData,Data> entry : newCols.entrySet()){
+            table.addColumn(entry.getKey(),entry.getValue());
+        }
+        return table;
       }else assert false;
       return null;
     }
@@ -287,8 +290,11 @@ public abstract class SpecialFunc {
         }
         return newTable;
       }else if(type.equals("Dict")){
-        //DictData newColsWithValue = (DictData) args.get(1);
-
+        DictData newCols = (DictData) args.get(1);
+        for(Map.Entry<StringData,Data> entry : newCols.entrySet()){
+            newTable.addColumn(entry.getKey(),entry.getValue());
+        }
+        return newTable;
       }else assert false;
       return null;
     }

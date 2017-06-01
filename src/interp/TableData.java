@@ -70,7 +70,19 @@ public class TableData extends Data {
     }
 
     public String toString() {
-      return table.toString();
+      String textTable = "";
+      for (int i=0; i<height(); i++) {
+          DictData row = get(i);
+          for (int j=0; j<width(); j++) {
+            Data elem = row.get(labels.get(j));
+            if (Data.isType("Void", elem))
+              textTable += ",  ";
+            else
+              textTable += elem.toString() + ",  ";
+          } 
+          textTable += "%n";
+        }
+      return textTable;
     }
 
     public ArrayList<String> getLabels() {
@@ -198,6 +210,11 @@ public class TableData extends Data {
       table.add(new DictData());
     }
     public void addRow(DictData dd){
+      boolean compatibleRow = true;
+      for(Map.Entry<StringData,Data> entry : dd.entrySet()){
+        if(!labels.contains(entry.getKey())) compatibleRow = false;
+      }
+      if(!compatibleRow) throw new RuntimeException(dd.toString() + " not compatible with the current table shape " + labels.toString());
       table.add(DictData.cast(dd.deepClone()));
     }
 
@@ -225,11 +242,12 @@ public class TableData extends Data {
         types.add(index, type);
       }
     }
-    public void addColumn(StringData col, ListData<Data> ld){
+    
+    public void addColumn(StringData col, Data elem){
       int index = labels.indexOf(col);
       String type = "";
-      if (!ld.empty())
-        type = ld.get(0).getType();
+      if (!Data.isType("Void",elem))
+        type = elem.getType();
       else
         type = "Untyped";
       if (index < 0) {
@@ -239,9 +257,8 @@ public class TableData extends Data {
       } else {
         types.add(index, type);
       }
-      assert height() == ld.size();
       for (int i=0; i<height(); i++) {
-          table.get(i).put(col, ld.get(i).deepClone());
+          table.get(i).put(col, elem.deepClone());
       }
     }
 
@@ -251,9 +268,10 @@ public class TableData extends Data {
       td.addColumn(col);
       return td;
     }
-    public TableData addColumnCopy(StringData col, ListData<Data> ld){
+    
+    public TableData addColumnCopy(StringData col, Data elem){
       TableData td = (TableData) deepClone();
-      td.addColumn(col, ld);
+      td.addColumn(col, elem);
       return td;
     }
 }

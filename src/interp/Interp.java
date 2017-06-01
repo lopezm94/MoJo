@@ -318,7 +318,7 @@ public class Interp {
                 }
 
                 // Write an expression
-                System.out.print(evaluateExpression(v).toString());
+                System.out.print(String.format(evaluateExpression(v).toString()));
                 return null;
             }
 
@@ -594,7 +594,7 @@ public class Interp {
             value = value.get(j);
         }
         if(assign && parent.getType().equals("Table") && value.getType().equals("Dict")){
-            throw new RuntimeException("Cannot modify rows from table");
+            throw new RuntimeException("Cannot replace an entire row from a table");
         }
         return value;
     }
