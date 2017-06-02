@@ -90,8 +90,12 @@ public class Interp {
     }
 
     /** Runs the program by calling the main function without parameters. */
-    public void Run() {
-        executeFunction ("main", null);
+    public Data Run() {
+        Data result = executeFunction ("main", null);
+        if(result==null){
+            result = new VoidData();
+        }
+        return result;
     }
 
     /** Returns the contents of the stack trace */
@@ -530,14 +534,14 @@ public class Interp {
         // Create the list of parameters
         ArrayList<Data> Params = new ArrayList<Data> ();
         int n = pars.getChildCount();
-
+        
         // Check that the number of parameters is the same
         int nargs = (args == null) ? 0 : args.getChildCount();
         if (n != nargs) {
             throw new RuntimeException ("Incorrect number of parameters calling function " +
                                         AstF.getChild(0).getText());
         }
-
+        
         // Checks the compatibility of the parameters passed by
         // reference and calculates the values and references of
         // the parameters.
@@ -560,6 +564,7 @@ public class Interp {
         }
         return Params;
     }
+    
     private ArrayList<Data> listArguments (AslTree args) {
         // Create the list of parameters
         ArrayList<Data> Params = new ArrayList<Data> ();
@@ -606,6 +611,7 @@ public class Interp {
      * @param f AST of the function
      * @param arg_values Values of the parameters passed to the function
      */
+     
     private void traceFunctionCall(AslTree f, ArrayList<Data> arg_values) {
         function_nesting++;
         AslTree params = f.getChild(1);
@@ -636,6 +642,7 @@ public class Interp {
      * @param result The value of the result
      * @param arg_values The value of the parameters passed to the function
      */
+     
     private void traceReturn(AslTree f, Data result, ArrayList<Data> arg_values) {
         for (int i=0; i < function_nesting; ++i) trace.print("|   ");
         function_nesting--;

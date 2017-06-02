@@ -1,0 +1,9 @@
+function main()
+    columns = ["nom","edat","professió", "residència"]
+    table = create_table(columns)
+    row = {"nom":"Juan","edat":22,"professió":"Not yet", "residència":"Olot"}
+    row2 = row
+    row2["nom"] = "Marc"
+    add_row!(table,row,row2)
+    return table
+end
