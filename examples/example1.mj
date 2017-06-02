@@ -9,4 +9,5 @@ function main()     # Se ejecuta por defecto
     tmp = mergesort(x,y)
     tmp = sample(8,tmp)
     write_file(tmp, "samples/example1.csv")
+    return num_rows(tmp) = 8
 end

@@ -1,4 +1,4 @@
 function main()
     table = source("examples/example13.mj")
-    write(table)
+    writeln table
 end
