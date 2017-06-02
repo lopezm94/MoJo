@@ -1,0 +1,7 @@
+function main()
+    tmp1 = read_file("samples/sample1.csv")
+    tmp2 = read_file("samples/sample2.csv")
+    writeln tmp1+tmp2
+
+    writeln "Baby " + "Don't " + "Hurt " + "Me " + "No " + "More"
+end

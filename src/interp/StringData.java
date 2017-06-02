@@ -11,7 +11,7 @@ public class StringData extends Data {
   public String getValue() { return text; }
 
   public void setValue(String b) { text = b; }
-  
+
   public void setValue(Data d){
     StringData s2 = cast(d);
     text = new String(s2.text);
@@ -70,7 +70,7 @@ public class StringData extends Data {
   }
 
     public StringData evaluateArithmetic (int op, Data data) {
-      assert "String" != data.getType();
+      assert "String" == data.getType();
 
       StringData string2 = (StringData) data;
       switch (op) {
