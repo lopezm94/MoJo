@@ -165,10 +165,8 @@ public class Interp {
      */
     private Data executeFunction (String funcname, AslTree args) {
         if (funcFactory.contains(funcname)) {
-          //System.out.println(funcname);
           SpecialFunc sf = funcFactory.getFunction(funcname);
           Data result = sf.call(listArguments(args));
-          //System.out.println()
           return result;
         }
 
@@ -260,6 +258,7 @@ public class Interp {
                     accessDataAndAssign(subtree, container, value);
                 }else{
                     Stack.defineVariable (t.getChild(0).getText(), value);
+                    value = Stack.getVariable(t.getChild(0).getText());
                 }
                 return null;
             }
@@ -322,6 +321,22 @@ public class Interp {
 
                 // Write an expression
                 System.out.print(String.format(evaluateExpression(v).toString()));
+                return null;
+            }
+
+            // Write statement: it can write an expression or a string.
+            case AslLexer.WRITELN: {
+                AslTree v = t.getChild(0);
+                // Special case for strings
+                if (v.getType() == AslLexer.STRING) {
+                    System.out.format(v.getStringValue());
+                    System.out.println("");
+                    return null;
+                }
+
+                // Write an expression
+                System.out.print(String.format(evaluateExpression(v).toString()));
+                System.out.println("");
                 return null;
             }
 
@@ -401,6 +416,11 @@ public class Interp {
                 Data container = Stack.getVariable(t.getChild(0).getText()).deepClone();
                 value = accessData(t,container);
                 break;
+            case AslLexer.FROM: {
+                Data table = Stack.getVariable(t.getChild(0).getText());
+                value = evaluateFromActions(table,t.getChild(1));
+                break;
+            }
             default: break;
         }
 
@@ -469,11 +489,67 @@ public class Interp {
                 value = evaluateBoolean(type,(BooleanData)value,t.getChild(1));
                 break;
 
-            default: assert false; // Should never happen
+            default: {
+              assert false; // Should never happen
+            }
         }
 
         setLineNumber(previous_line);
         return value;
+    }
+
+    public Data evaluateFromActions(Data table, AslTree t) {
+      assert t.getType() == AslLexer.FROM_ACTIONS;
+      assert Data.isType("Table", table);
+      int n = t.getChildCount();
+
+      TableData res = new TableData();
+      TableData previous = TableData.cast(table);
+      for (int i=0; i<n; i++) {
+        res = new TableData(previous.getStringDataLabels(),previous.getTypes());
+        int type = t.getChild(i).getType();
+        for (int j=0; j<previous.height(); j++) {
+          boolean b;
+          DictData row;
+          switch(type) {
+            case AslLexer.SELECT: {
+                b = evaluateContextBoolean(previous,j,t.getChild(i).getChild(0));
+                if (b) res.addRow(previous.get(j));
+                break;
+            }
+
+            case AslLexer.FILTER: {
+                b = !evaluateContextBoolean(previous,j,t.getChild(i).getChild(0));
+                if (b) res.addRow(previous.get(j));
+                break;
+            }
+
+            case AslLexer.UPDATE: {
+                Data col, value;
+                if (t.getChild(i).getChildCount()<3) {
+                  col = evaluateExpression(t.getChild(i).getChild(0));
+                  value = evaluateExpression(t.getChild(i).getChild(1));
+                  b = true;
+                } else {
+                  col = evaluateExpression(t.getChild(i).getChild(0));
+                  value = evaluateExpression(t.getChild(i).getChild(2));
+                  b =evaluateContextBoolean(previous,j,t.getChild(i).getChild(1));
+                }
+                res.addRow(previous.get(j));
+                if (b) res.put(j,StringData.cast(col),value);
+                break;
+            }
+
+            default: assert false;
+          }
+        }
+        previous = res;
+      }
+      return res;
+    }
+
+    public boolean evaluateContextBoolean(TableData table, int i, AslTree t) {
+      return true;
     }
 
     /**
@@ -533,14 +609,14 @@ public class Interp {
         // Create the list of parameters
         ArrayList<Data> Params = new ArrayList<Data> ();
         int n = pars.getChildCount();
-        
+
         // Check that the number of parameters is the same
         int nargs = (args == null) ? 0 : args.getChildCount();
         if (n != nargs) {
             throw new RuntimeException ("Incorrect number of parameters calling function " +
                                         AstF.getChild(0).getText());
         }
-        
+
         // Checks the compatibility of the parameters passed by
         // reference and calculates the values and references of
         // the parameters.
@@ -563,7 +639,7 @@ public class Interp {
         }
         return Params;
     }
-    
+
     private ArrayList<Data> listArguments (AslTree args) {
         // Create the list of parameters
         ArrayList<Data> Params = new ArrayList<Data> ();
@@ -639,7 +715,7 @@ public class Interp {
      * @param f AST of the function
      * @param arg_values Values of the parameters passed to the function
      */
-     
+
     private void traceFunctionCall(AslTree f, ArrayList<Data> arg_values) {
         function_nesting++;
         AslTree params = f.getChild(1);
@@ -670,7 +746,7 @@ public class Interp {
      * @param result The value of the result
      * @param arg_values The value of the parameters passed to the function
      */
-     
+
     private void traceReturn(AslTree f, Data result, ArrayList<Data> arg_values) {
         for (int i=0; i < function_nesting; ++i) trace.print("|   ");
         function_nesting--;

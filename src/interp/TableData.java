@@ -61,7 +61,7 @@ public class TableData extends Data {
     public String getType() {
       return "Table";
     }
-    
+
     public void setValue (Data d){
         TableData t2 = cast(d);
         types = (ArrayList<String>) t2.types.clone();
@@ -79,7 +79,7 @@ public class TableData extends Data {
               textTable += ",  ";
             else
               textTable += elem.toString() + ",  ";
-          } 
+          }
           textTable += "%n";
         }
       return textTable;
@@ -91,6 +91,14 @@ public class TableData extends Data {
         res.add(labels.get(i).getValue());
       }
       return res;
+    }
+
+    public ArrayList<String> getTypes() {
+      return types;
+    }
+
+    public ListData<StringData> getStringDataLabels() {
+      return labels;
     }
 
     public Data deepClone() {
@@ -125,7 +133,7 @@ public class TableData extends Data {
     public TableData sample(IntegerData n) {
       return sample(n.getValue());
     }
-    
+
     public TableData sample(int n) {
       if (height() < n)
         throw new RuntimeException(
@@ -171,13 +179,13 @@ public class TableData extends Data {
       if(row >= height()) throw new RuntimeException("Table height "+height()+" is lower than requested row "+row+"\n");
       return table.get(row);
     }
-    
+
     public DictData get(Data d){
       assert d.getType().equals("Integer");
       IntegerData row = (IntegerData) d;
       return get(row.getValue());
     }
-    
+
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }
@@ -249,7 +257,7 @@ public class TableData extends Data {
         types.add(index, type);
       }
     }
-    
+
     public void addColumn(StringData col, Data elem){
       int index = labels.indexOf(col);
       String type = "";
@@ -275,7 +283,7 @@ public class TableData extends Data {
       td.addColumn(col);
       return td;
     }
-    
+
     public TableData addColumnCopy(StringData col, Data elem){
       TableData td = (TableData) deepClone();
       td.addColumn(col, elem);
