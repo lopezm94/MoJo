@@ -98,8 +98,9 @@ return_stmt	:	RETURN^ expr?
 read  :	READ^ ID
       ;
 
-// Write an expression or a stringh
+// Write an expression or a string
 write :   WRITE^ expr
+      |   WRITELN^ expr
       ;
 
 // Grammar for expressions with boolean, relational and aritmetic operators
@@ -172,7 +173,7 @@ select  :   SELECT^ expr;
 
 filter  :   FILTER^ expr;
 
-update  :   UPDATE^ expr (WHEN^ expr)? WITH! expr;
+update  :   UPDATE^ expr (WHEN! expr)? WITH! expr;
 
 // A function call has a list of arguments in parenthesis (possibly empty)
 funcall :   ID '(' expr_list? ')' -> ^(FUNCALL ID ^(ARGLIST expr_list?))
@@ -211,6 +212,7 @@ WHEN      : 'when';
 FROM      : 'from';
 FILTER    : 'filter';
 WRITE     : 'write' ;
+WRITELN   : 'writeln' ;
 TRUE      : 'true' ;
 FALSE     : 'false';
 WITH      : 'with';

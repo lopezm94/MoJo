@@ -1,10 +1,20 @@
 function main()
-    x = read_file("sample1.csv")
-    y = read_file("sample2.csv")
+    x = read_file("samples/sample3.csv")
+    y = x
+    writeln "Table x"
+    writeln x
+    writeln "Table y"
+    writeln y
     aux1 = from x
         select (:age <= 5)
-        select (:1 = "MJ RULES")
+        select (:2 = "MJ RULES")
     end
-    aux2 = from y filter (:age > 5  or :"Bio" != "MJ RULES") end # : character is for accesing directly the column
-    return (aux1 = aux2)   # Si no hay return se retorna VOID por defecto
+    writeln "Table aux1"
+    writeln aux1
+    aux2 = from y filter (:age > 5  or :"bio" != "MJ RULES") end
+    writeln "Table aux2"
+    writeln aux2
+    writeln "Table result"
+    writeln (aux1 = aux2)
+    return (aux1 = aux2)
 end
