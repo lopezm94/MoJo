@@ -6,12 +6,10 @@ function main()
     add_column!(x, ["lorey money"])
     add_row!(x, {"name":"Marc", "surname":"Ortiz", "age":22, "skill":"Making neural networks and playing basket", "lorey money":1000000}) # Si el tamaño de la lista es distinto al numero de columnas: ERROR
     bankrupt = true;
-    
+
     if (bankrupt)
-        #x = from x update "lorey money" with 0 end
+        x = from x update "lorey money" with 0 end
         write_file(x, "examples/example5.out")
-        x2 = read_file("examples/example5.out")
         write(x)
-        write(x2)
     end
 end
