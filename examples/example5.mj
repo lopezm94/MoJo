@@ -9,7 +9,7 @@ function main()
 
     if (bankrupt)
         x = from x update "lorey money" with 0 end
-        write_file(x, "samples/example5.out")
+        write_file(x, "samples/example5.csv")
         write(x)
     end
 end

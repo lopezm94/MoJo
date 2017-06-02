@@ -1,5 +1,5 @@
 function main()
-    tmp = read_file("samples/example5.out")
+    tmp = read_file("samples/example5.csv")
     i = 0
     j = 0
     nrows = num_rows(tmp)

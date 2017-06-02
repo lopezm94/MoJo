@@ -1,6 +1,6 @@
 function main()
     column_names = ["name", "surname"] + ["age", "skill"] # Concatenation
-    Countries = ["Info",[["China","Planty"],["North Korea","Dangerous"],["Spain","Lazy"]]]
+    Countries = ["Info",[["China","Planty"],["North Korea","Dangerous"],["Spain","Awesome"]]]
 
     x = create_table(column_names) # El tipo de las columnas se defininira cuando se añada un elemento
     add_row!(x, {"name":"Jon", "surname":"Snow", "age":26, "skill":"Knowing nothing"})
