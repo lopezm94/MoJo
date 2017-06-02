@@ -9,9 +9,9 @@ function main()
     Nrows = num_rows(t)
 
     if(Nrows = 3)
-        write("Working! ")
-    else 
-        write("Not working! \n\n")
+        write("Working! %n")
+    else
+        write("Not working! %n")
     end
 
 end

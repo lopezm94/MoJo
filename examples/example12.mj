@@ -1,5 +1,5 @@
 function main()
-    tmp = read_file("examples/example5.out")
+    tmp = read_file("samples/example5.out")
     tmp[0,"name"] = "Marc"
     tmp[0,"age"] = 22
     tmp[0,"skill"] = tmp[0,"skill"]
@@ -7,4 +7,3 @@ function main()
     write(tmp)
     write("%n")
 end
- 
