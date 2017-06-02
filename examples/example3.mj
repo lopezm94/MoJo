@@ -1,19 +1,15 @@
 function main()
     x = read_file("samples/sample3.csv")
-    y = x
     write "Table x%n"
     writeln x
-    writeln "Table y"
-    writeln y
     var = "age"
     aux1 = from x
-        select (:var <= 5)
-        select (:2 = "MJ RULES")
+        select (:var <= 5 and :2 = "MJ RULES")
     end
     writeln "Table aux1"
     writeln aux1
     var = 1
-    aux2 = from y filter (:var > 5  or :"bio" != "MJ RULES") end
+    aux2 = from x filter (:var > 5  or :"bio" != "MJ RULES") end
     writeln "Table aux2"
     writeln aux2
     writeln "Table result"
