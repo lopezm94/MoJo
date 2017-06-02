@@ -6,6 +6,5 @@ function main()
     add_row!(table,row,row2)
     table[0,"edat"] = 12
     table[0,"residència"] = "Caracas"
-    table[1,"residència"] = 20
     write(table)
 end
