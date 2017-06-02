@@ -2,6 +2,16 @@ package interp;
 import java.io.*;
 import java.util.*;
 import org.apache.commons.csv.*;
+// Imports for ANTLR
+import org.antlr.runtime.*;
+import org.antlr.runtime.tree.*;
+import org.antlr.stringtemplate.*;
+
+// Imports from Java
+import org.apache.commons.cli.*; // Command Language Interface
+import java.io.*;
+import parser.*;
+
 
 public abstract class SpecialFunc {
 
@@ -301,5 +311,80 @@ public abstract class SpecialFunc {
   }
 
 
+  public static class ExecuteScript extends SpecialFunc{
+    private static final int nparams = 1;
+    private static final String funcname = "source";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparams , nparams , args);
+      assert args.get(0).getType().equals("String");
+    
+      Data script_result = new VoidData();
+      StringData file = (StringData) args.get(0);
+      String infile = file.getValue();
+      boolean execute = true;
+      
+      CharStream input = null;
+        try {
+            input = new ANTLRFileStream(infile);
+        } catch (IOException e) {
+            System.err.println ("Error: file " + infile + " could not be opened.");
+            System.exit(1);
+        }
+
+        // Creates the lexer
+        AslLexer lex = new AslLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lex);
+
+        // Creates and runs the parser. As a result, an AST is created
+        AslParser parser = new AslParser(tokens);
+        AslTreeAdaptor adaptor = new AslTreeAdaptor();
+        parser.setTreeAdaptor(adaptor);
+        AslParser.prog_return result = null;
+        try {
+            result = parser.prog();
+        } catch (Exception e) {} // Just catch the exception (nothing to do)
+        
+        // Check for parsing errors
+        int nerrors = parser.getNumberOfSyntaxErrors();
+        if (nerrors > 0) {
+            System.err.println (nerrors + " errors detected. " +
+                                "The program has not been executed.");
+            System.exit(1);
+        }
+
+        // Get the AST
+        AslTree t = (AslTree)result.getTree();
+
+        // Start interpretation (only if execution required)
+        if (execute) {
+            // Creates and prepares the interpreter
+            Interp I = null;
+            int linenumber = -1;
+            
+            try {
+                I = new Interp(t, null); // prepares the interpreter
+                script_result = I.Run();                  // Executes the code
+            } catch (RuntimeException e) {
+                if (I != null) linenumber = I.lineNumber();
+                System.err.print ("Runtime error");
+                if (linenumber < 0) System.err.print (": ");
+                else System.err.print (" (" + infile + ", line " + linenumber + "): ");
+                System.err.println (e.getMessage() + ".");
+                System.err.format (I.getStackTrace());
+            } catch (StackOverflowError e) {
+                if (I != null) linenumber = I.lineNumber();
+                System.err.print("Stack overflow error");
+                if (linenumber < 0) System.err.print (".");
+                else System.err.println (" (" + infile + ", line " + linenumber + ").");
+                System.err.format (I.getStackTrace(5));
+            }
+        }
+        
+      return script_result;
+    }
+  }
+  
+  
+  
 
 }
