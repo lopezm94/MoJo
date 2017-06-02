@@ -1,0 +1,10 @@
+function main()
+    tmp = read_file("samples/numbers.csv")
+    writeln tmp
+    drop(tmp, 1)
+    writeln tmp
+    drop(tmp, "a")
+    writeln tmp
+    drop(tmp)
+    writeln tmp
+end

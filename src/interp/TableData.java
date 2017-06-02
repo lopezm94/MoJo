@@ -42,6 +42,11 @@ public class TableData extends Data {
       return labels.size() == 0;
     }
 
+    public void clear() {
+      table.clear();
+      types.clear();
+    }
+
     @Override
     public int hashCode() {
       return table.hashCode();
@@ -71,17 +76,32 @@ public class TableData extends Data {
 
     public String toString() {
       String textTable = "";
+      textTable += "Labels:%n";
+      for (int j=0; j<labels.size(); j++) {
+        Data elem = labels.get(j);
+        if (Data.isType("Void", elem))
+          textTable += ",  ";
+        else
+          textTable += elem.toString() + ",  ";
+      }
+      textTable += "%nContents:%n";
       for (int i=0; i<height(); i++) {
-          DictData row = get(i);
-          for (int j=0; j<width(); j++) {
-            Data elem = row.get(labels.get(j));
-            if (Data.isType("Void", elem))
-              textTable += ",  ";
-            else
-              textTable += elem.toString() + ",  ";
-          }
-          textTable += "%n";
+        DictData row = get(i);
+        for (int j=0; j<width(); j++) {
+          Data elem = row.get(labels.get(j));
+          if (Data.isType("Void", elem))
+            textTable += ",  ";
+          else
+            textTable += elem.toString() + ",  ";
         }
+        textTable += "%n";
+      }
+      textTable += "Types:%n";
+      for (int j=0; j<types.size(); j++) {
+        String elem = types.get(j);
+        textTable += elem.toString() + ",  ";
+      }
+      textTable += "%n";
       return textTable;
     }
 
@@ -176,7 +196,7 @@ public class TableData extends Data {
     }
 
 
-    public TableData evaluateArithmetic (int op, Data data) {    
+    public TableData evaluateArithmetic (int op, Data data) {
       switch (op) {
           case AslLexer.PLUS:
             TableData newTable = deepClone();

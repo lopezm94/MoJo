@@ -116,9 +116,9 @@ public abstract class SpecialFunc {
       return new VoidData();
     }
   }
-  
 
-  
+
+
   public static class CreateNewTable extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "create_table";
@@ -176,7 +176,7 @@ public abstract class SpecialFunc {
       return res;
     }
   }
-  
+
   public static class GetColumnNames extends SpecialFunc {
     private static final int nparams = 1;
     private static final String funcname = "column_names";
@@ -187,7 +187,7 @@ public abstract class SpecialFunc {
       return table.getColumnNames();
     }
   }
-  
+
   public static class GetNumRows extends SpecialFunc{
     private static final int nparams = 1;
     private static final String funcname = "num_rows";
@@ -196,10 +196,10 @@ public abstract class SpecialFunc {
       assert args.get(0).getType().equals("Table");
       TableData table = (TableData) args.get(0);
       return new IntegerData(table.height());
-      
+
     }
   }
-  
+
   public static class GetNumCols extends SpecialFunc{
     private static final int nparams = 1;
     private static final String funcname = "num_columns";
@@ -208,10 +208,10 @@ public abstract class SpecialFunc {
       assert args.get(0).getType().equals("Table");
       TableData table = (TableData) args.get(0);
       return new IntegerData(table.width());
-      
+
     }
   }
-  
+
   public static class GetListLength extends SpecialFunc{
     private static final int nparams = 1;
     private static final String funcname = "length";
@@ -220,7 +220,7 @@ public abstract class SpecialFunc {
       assert args.get(0).getType().equals("List");
       ListData list = (ListData) args.get(0);
       return new IntegerData(list.size());
-      
+
     }
   }
 
@@ -318,12 +318,12 @@ public abstract class SpecialFunc {
     public Data call(ArrayList<Data> args) {
       checkParams(funcname, nparams , nparams , args);
       assert args.get(0).getType().equals("String");
-    
+
       Data script_result = new VoidData();
       StringData file = (StringData) args.get(0);
       String infile = file.getValue();
       boolean execute = true;
-      
+
       CharStream input = null;
         try {
             input = new ANTLRFileStream(infile);
@@ -344,7 +344,7 @@ public abstract class SpecialFunc {
         try {
             result = parser.prog();
         } catch (Exception e) {} // Just catch the exception (nothing to do)
-        
+
         // Check for parsing errors
         int nerrors = parser.getNumberOfSyntaxErrors();
         if (nerrors > 0) {
@@ -361,7 +361,7 @@ public abstract class SpecialFunc {
             // Creates and prepares the interpreter
             Interp I = null;
             int linenumber = -1;
-            
+
             try {
                 I = new Interp(t, null); // prepares the interpreter
                 script_result = I.Run();                  // Executes the code
@@ -380,11 +380,11 @@ public abstract class SpecialFunc {
                 System.err.format (I.getStackTrace(5));
             }
         }
-        
+
       return script_result;
     }
   }
-  
+
 
   public static class Drop extends SpecialFunc{
     private static final int nparamsMin = 1;
@@ -408,12 +408,12 @@ public abstract class SpecialFunc {
         assert false;
       }else{
         //Empty table
-        t = new TableData(t.getStringDataLabels());
+        t.clear();
       }
       return null;
     }
   }
-  
-  
+
+
 
 }
