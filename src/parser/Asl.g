@@ -22,7 +22,7 @@ tokens {
     ACCESS;           // Access element contents
     LIST;             // List
     COLUMN;           // Columna
-    FROM_ACTIONS;     //accions a fer dins del block from
+    FROM_ACTIONS;     // Action to make inside block 'from'
     DICT;
 }
 
@@ -141,7 +141,7 @@ list    :   '[' expr_list? ']' -> ^(LIST expr_list?)
 
 dict    :   '{' dict_list? '}' -> ^(DICT dict_list?)
         ;
-        
+
 dict_list : STRING ':'! expr (','! STRING ':'! expr)*
           ;
 
