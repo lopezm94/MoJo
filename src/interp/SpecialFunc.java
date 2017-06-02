@@ -48,6 +48,7 @@ public abstract class SpecialFunc {
           CSVRecord record = records.get(i);
           for (int j=0; j<labels.size(); j++) {
             Data elem = Data.parse(record.get(j));
+            if(Data.isType("Void", elem)) continue;
             result.put(i-1,labels.get(j),elem);
           }
         }
