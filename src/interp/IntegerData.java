@@ -89,7 +89,6 @@ public class IntegerData extends Data {
   * Evaluation of arithmetic expressions. The evaluation is done
   * "in place", returning the result on the same data.
   * @param op Type of operator (token).
-  * @param d Second operand.value == 1
   * @return A Boolean data with the value of the expression.
   */
   public IntegerData evaluateArithmetic(int op, Data data) {

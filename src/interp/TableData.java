@@ -180,6 +180,26 @@ public class TableData extends Data {
       return table.get(row);
     }
 
+    public void DropRow(IntegerData row){
+      DropRow(row.getValue());
+    }
+
+    public void DropRow(int row){
+      if(row >= height()) throw new RuntimeException("Table height "+height()+" is lower than requested row "+row+"\n");
+      table.remove(row);
+    }
+
+    public void DropColumn(StringData col){
+      if(!labels.contains(col)) throw new RuntimeException("Table has no column named " + col.getValue());
+      int pos = labels.indexOf(col);
+      labels.DropElem(col);
+      for(int i=0; i<height(); ++i){
+        table.get(i).DropEntry(col);
+      }
+      types.remove(pos);
+    }
+
+
     public DictData get(Data d){
       assert d.getType().equals("Integer");
       IntegerData row = (IntegerData) d;
