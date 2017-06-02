@@ -10,3 +10,4 @@ tree.ast
 samples/*.out
 *.pdf
 *.out
+!MoJo-specification.pdf
