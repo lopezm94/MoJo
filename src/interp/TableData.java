@@ -101,7 +101,7 @@ public class TableData extends Data {
       return labels;
     }
 
-    public Data deepClone() {
+    public TableData deepClone() {
       TableData res = new TableData(labels, types);
       for (DictData row: table) {
         DictData row_copy = new DictData();
@@ -174,6 +174,23 @@ public class TableData extends Data {
       }
       return null;
     }
+
+
+    public TableData evaluateArithmetic (int op, Data data) {    
+      switch (op) {
+          case AslLexer.PLUS:
+            TableData newTable = deepClone();
+            assert data.getType().equals("Table");
+            TableData table2 = (TableData) data;
+            newTable.merge(table2);
+            return newTable;
+          default: assert false;
+      }
+
+      return null;
+
+    }
+
 
     public DictData get(int row) {
       if(row >= height()) throw new RuntimeException("Table height "+height()+" is lower than requested row "+row+"\n");

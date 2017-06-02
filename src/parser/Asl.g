@@ -72,7 +72,7 @@ instruction
         | while_stmt      // while statement
         | funcall         // Call to a procedure (no result produced)
         | return_stmt     // Return statement
-        |	read            // Read a variable
+        | read            // Read a variable
         | write           // Write a string or an expression
         | from            // Special instructions for tables
         |                 // Nothing
