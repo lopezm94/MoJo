@@ -19,7 +19,7 @@ public class FuncFactory {
     fnames = new HashSet<String>(Arrays.asList(new String[] {
       "read_file", "write_file", "create_table", "column_names",
       "add_row", "add_row!", "sample", "add_column", "add_column!",
-      "sort", "merge", "num_rows", "num_columns", "length","source",
+      "sort", "merge", "num_rows", "num_columns", "length","source", "drop",
       }));
     functions = new HashMap<String, SpecialFunc>();
     functions.put("read_file", new SpecialFunc.ReadFile());
@@ -37,7 +37,7 @@ public class FuncFactory {
     functions.put("num_columns", new SpecialFunc.GetNumCols());
     functions.put("length", new SpecialFunc.GetListLength());
     functions.put("source", new SpecialFunc.ExecuteScript());
-    
+    functions.put("drop", new SpecialFunc.Drop());
     
     
     

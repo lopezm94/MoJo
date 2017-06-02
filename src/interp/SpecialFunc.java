@@ -385,6 +385,34 @@ public abstract class SpecialFunc {
     }
   }
   
+
+  public static class Drop extends SpecialFunc{
+    private static final int nparamsMin = 1;
+    private static final int nparamsMax = 2;
+    private static final String funcname = "drop";
+    public Data call(ArrayList<Data> args) {
+      checkParams(funcname, nparamsMin , nparamsMax , args);
+      assert args.get(0).getType().equals("Table");
+      TableData t = (TableData) args.get(0);
+      if(args.size() > 1){
+        String type = args.get(1).getType();
+        if(type.equals("Integer")){
+          IntegerData row = (IntegerData) args.get(1);
+          t.DropRow(row);
+          return null;
+        }else if(type.equals("String")){
+          StringData col = (StringData) args.get(1);
+          t.DropColumn(col);
+          return null;
+        }
+        assert false;
+      }else{
+        //Empty table
+        t = new TableData(t.getStringDataLabels());
+      }
+      return null;
+    }
+  }
   
   
 

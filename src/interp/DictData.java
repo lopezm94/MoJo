@@ -27,7 +27,13 @@ public class DictData extends Data {
     public void put(StringData key, Data data) {
       dict.put(key, data.deepClone());
     }
-    
+
+    public void DropEntry(StringData key){
+      if(dict.containsKey(key)){
+        dict.remove(key);
+      }
+    }
+
     public void setValue(Data d){
         if(!d.getType().equals("Dict")) throw new RuntimeException("Received " + d.getType() + ", expected DictData\n"); 
         DictData d2 = (DictData) d;

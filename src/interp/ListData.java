@@ -61,6 +61,11 @@ public class ListData<T extends Data> extends Data {
       return list.size() == 0;
     }
 
+    public void DropElem(Data elem){
+      if(!list.contains(elem)) throw new RuntimeException("Element " + elem.toString() + " not present in the list");
+      list.remove(elem);
+    }
+
     public int indexOf(Object obj) {
       return list.indexOf(obj);
     }
