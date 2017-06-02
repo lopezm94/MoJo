@@ -21,6 +21,7 @@ public class TableData extends Data {
       labels = (ListData<StringData>) ld.deepClone();
       types = new ArrayList<String>();
       table = new ArrayList<DictData>();
+      for(int i=0; i<ld.size(); ++i) types.add("Untyped");
     }
     public TableData(ListData<StringData> ld, ArrayList<String> t) {
       labels = (ListData<StringData>) ld.deepClone();
@@ -54,8 +55,7 @@ public class TableData extends Data {
       }
       TableData td = (TableData) o;
       return table.equals(td.table)
-        && labels.equals(td.labels)
-        && types.equals(td.types);
+        && labels.equals(td.labels);
     }
 
     public String getType() {
@@ -195,13 +195,19 @@ public class TableData extends Data {
         return labels;
     }
 
-
     public void put(int row, String col, Data data) {
       put(row, new StringData(col), data);
     }
+    
     public void put(int row, StringData col, Data data) {
       while (height() <= row)
         addRow();
+      String type = types.get(labels.indexOf(col));
+      if(type.equals("Untyped")) {
+        types.set(labels.indexOf(col),data.getType());
+        type = data.getType();
+      }
+      if(!type.equals(data.getType())) throw new RuntimeException("Column " + col.getValue()+ " with type " + types.get(labels.indexOf(col)) + " is not compatible with type " + data.getType());
       table.get(row).put(col, data.deepClone());
     }
 
@@ -211,11 +217,11 @@ public class TableData extends Data {
     }
     public void addRow(DictData dd){
       boolean compatibleRow = true;
+      int rowid = height();
       for(Map.Entry<StringData,Data> entry : dd.entrySet()){
-        if(!labels.contains(entry.getKey())) compatibleRow = false;
+        if(!labels.contains(entry.getKey())) throw new RuntimeException(dd.toString() + " not compatible with the current table shape " + labels.toString());
+        put(rowid, entry.getKey(), entry.getValue());
       }
-      if(!compatibleRow) throw new RuntimeException(dd.toString() + " not compatible with the current table shape " + labels.toString());
-      table.add(DictData.cast(dd.deepClone()));
     }
 
     /**Returns a table with an added row in the table**/
@@ -224,6 +230,7 @@ public class TableData extends Data {
       td.addRow(new DictData());
       return td;
     }
+    
     public TableData addRowCopy(DictData dd){
       TableData td = (TableData) deepClone();
       td.addRow(dd);
@@ -233,7 +240,7 @@ public class TableData extends Data {
     /**Adds a column in the table**/
     public void addColumn(StringData col){
       int index = labels.indexOf(col);
-      String type = "";
+      String type = "Untyped";
       if (index < 0) {
         index = width();
         labels.add(StringData.cast(col.deepClone()));

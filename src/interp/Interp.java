@@ -257,8 +257,7 @@ public class Interp {
                 if(t.getChild(0).getType() == AslLexer.ACCESS){
                     AslTree subtree = t.getChild(0);
                     Data container = Stack.getVariable(subtree.getChild(0).getText());
-                    Data element = accessData(subtree, container, true);
-                    element.setValue(value);
+                    accessDataAndAssign(subtree, container, value);
                 }else{
                     Stack.defineVariable (t.getChild(0).getText(), value);
                 }
@@ -400,7 +399,7 @@ public class Interp {
                 break;
             case AslLexer.ACCESS:
                 Data container = Stack.getVariable(t.getChild(0).getText()).deepClone();
-                value = accessData(t,container,false);
+                value = accessData(t,container);
                 break;
             default: break;
         }
@@ -587,21 +586,50 @@ public class Interp {
         return Params;
     }
     
-    private Data accessData(AslTree t, Data container, boolean assign){
+    private Data accessData(AslTree t, Data container){
         Data value;
         ArrayList<Data> indexes = listArguments(t.getChild(1));
         Data i = indexes.get(0);
-        Data parent = container;
+        Data j;
         value = container.get(i);
         for(int dims = 1; dims < indexes.size(); ++dims){
-            parent = value;
-            Data j = indexes.get(dims);
+            j = indexes.get(dims);
             value = value.get(j);
         }
-        if(assign && parent.getType().equals("Table") && value.getType().equals("Dict")){
+        
+        return value;
+    }
+    
+    private void accessDataAndAssign(AslTree t, Data container, Data value){
+        Data elem;
+        ArrayList<Data> indexes = listArguments(t.getChild(1));
+        Data i = indexes.get(0);
+        Data j = new VoidData();
+        Data parent = container;
+        Data great_parent = new VoidData();
+        elem = container.get(i);
+        
+        for(int dims = 1; dims < indexes.size(); ++dims){
+            great_parent = parent;
+            parent = elem;
+            j = i;
+            i = indexes.get(dims);
+            elem = elem.get(i);
+        }
+        
+        if(parent.getType().equals("Table") && elem.getType().equals("Dict")){
             throw new RuntimeException("Cannot replace an entire row from a table");
         }
-        return value;
+        if(parent.getType().equals("Dict") && elem.getType().equals("Void")){
+            DictData dict = (DictData) parent;
+            StringData key = (StringData) i;
+            TableData table = (TableData) great_parent;
+            IntegerData row = (IntegerData) j;
+            if(great_parent.getType().equals("Table")) table.put(row.getValue(),key,value);
+            else dict.put(key,value);
+        }else{
+            elem.setValue(value);
+        }
     }
 
     /**

@@ -3,9 +3,7 @@ function main()
     table = create_table(columns)
     row = {"nom":"Juan","edat":22,"professió":"Not yet"}
     add_row!(table,row)
-    write(table)
     write_file(table,"file.out")
     table2 = read_file("file.out")
-    write(table2)
     write(table=table2)
 end
