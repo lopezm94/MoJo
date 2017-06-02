@@ -4,7 +4,8 @@ function main()
     writeln x
     var = "age"
     aux1 = from x
-        select (:var <= 5 and :2 = "MJ RULES")
+        select (:var <= 5)
+        select (:2 = "MJ RULES")
     end
     writeln "Table aux1"
     writeln aux1

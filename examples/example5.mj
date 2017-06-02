@@ -7,9 +7,6 @@ function main()
     add_row!(x, {"name":"Marc", "surname":"Ortiz", "age":22, "skill":"Making neural networks and playing basket", "lorey money":1000000}) # Si el tamaño de la lista es distinto al numero de columnas: ERROR
     bankrupt = true;
 
-    if (bankrupt)
-        x = from x update "lorey money" with 0 end
-        write_file(x, "samples/example5.csv")
-        write(x)
-    end
+    x = from x update "lorey money" when bankrupt with 0 end
+    write x
 end
