@@ -9,6 +9,10 @@ public class VoidData extends Data {
 
   public String toString() { return "Void"; }
 
+  public void setValue(Data d) {
+    throw new RuntimeException("Not possible to set value to data type " + d.getClass());
+  }
+
   @Override
   public int hashCode() {
     return 0;

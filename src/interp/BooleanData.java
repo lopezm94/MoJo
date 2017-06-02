@@ -12,6 +12,11 @@ public class BooleanData extends Data {
 
   public void setValue(boolean b) { value = b; }
 
+  public void setValue(Data d) {
+    BooleanData aux = cast(d);
+    value = (boolean) aux.value;
+  }
+
   @Override
   public int hashCode() {
     return 0;

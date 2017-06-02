@@ -11,10 +11,10 @@ public class IntegerData extends Data {
   public int getValue() { return value; }
 
   public void setValue(int b) { value = b; }
-  
-  public void setValue(Data d) { 
-    IntegerData i2 = cast(d);
-    value = (int) i2.value;
+
+  public void setValue(Data d) {
+    IntegerData aux = cast(d);
+    value = (int) aux.value;
   }
 
   public String getType() { return "Integer"; }

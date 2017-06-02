@@ -48,24 +48,22 @@ public abstract class Data {
 
   public abstract String getType();
 
+  public abstract void setValue(Data d);
+
   public abstract BooleanData evaluateRelational(int op, Data data);
+
+  public Data evaluateArithmetic(int op, Data data){
+    throw new RuntimeException("Data type not supported for arithmetic operations");
+  }
+
+  public Data get(Data d){
+    throw new RuntimeException("Data type not supported to be indexed");
+  }
 
   public static boolean isType (String type, Data b) {
       return b.getType() == type;
   }
 
-  public void setValue(Data d){
-    throw new RuntimeException("Not possible to set value to data type " + d.getClass());
-  }
-  
-  public Data evaluateArithmetic(int op, Data data){
-    throw new RuntimeException("Data type not supported for arithmetic operations");
-  }
-  
-  public Data get(Data d){
-    throw new RuntimeException("Data type not supported to be indexed");
-  }
-  
   // Transoform object to Data equivalent
   public static Data toData(Object o) {
     if (o == null) return new VoidData();
