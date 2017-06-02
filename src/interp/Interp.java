@@ -722,7 +722,7 @@ public class Interp {
         // Return the value of the second expression
         Data aux = evaluateExpression(t);
         checkType("Boolean", aux);
-        return (BooleanData) v;
+        return (BooleanData) aux;
     }
     private Data evaluateContextShortCircuit (TableData table, int row_i, int type, BooleanData v, AslTree t) {
         // Boolean evaluation with short-circuit
@@ -744,7 +744,7 @@ public class Interp {
         // Return the value of the second expression
         Data aux = evaluateContextExpression(table, row_i, t);
         checkType("Boolean", aux);
-        return (BooleanData) v;
+        return (BooleanData) aux;
     }
 
     /** Checks that the data is Type type and raises an exception if it is not. */
