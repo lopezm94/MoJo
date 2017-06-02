@@ -362,7 +362,6 @@ public class Interp {
 
     private Data evaluateExpression(AslTree t) {
         assert t != null;
-
         int previous_line = lineNumber();
         setLineNumber(t);
         int type = t.getType();
@@ -498,6 +497,145 @@ public class Interp {
         return value;
     }
 
+    private Data evaluateContextExpression(TableData table, int row_i, AslTree t) {
+        assert t != null;
+        int type = t.getType();
+
+        Data value = null;
+        // Atoms
+        switch (type) {
+            case AslLexer.ID: {
+                value = Stack.getVariable(t.getText()).deepClone();
+                break;
+            }
+            case AslLexer.INT: {
+                value = new IntegerData(t.getIntValue());
+                break;
+            }
+            case AslLexer.BOOLEAN: {
+                value = new BooleanData(t.getBooleanValue());
+                break;
+            }
+            case AslLexer.FUNCALL: {
+                value = executeFunction(t.getChild(0).getText(), t.getChild(1));
+                assert value != null;
+                if (Data.isType("Void", value)) {
+                    throw new RuntimeException ("function expected to return a value");
+                }
+                break;
+            }
+            case AslLexer.STRING:
+                value = new StringData(t.getStringValue());
+                break;
+            case AslLexer.LIST:
+                ArrayList<Data> llista = new ArrayList<Data>();
+                for(int i=0; i<t.getChildCount(); ++i){
+                    Data list_elem = evaluateContextExpression(table, row_i, t.getChild(i));
+                    llista.add(list_elem);
+                }
+                value = new ListData<Data>(llista);
+                break;
+            case AslLexer.DICT:
+                HashMap<StringData,Data> dict = new HashMap<StringData,Data>();
+                StringData col; Data d;
+                for(int i = 0; i<t.getChildCount(); i+=2){
+                   col = (StringData) evaluateContextExpression(table, row_i, t.getChild(i));
+                   d = evaluateContextExpression(table, row_i, t.getChild(i+1));
+                   dict.put(col,d);
+                }
+                value = new DictData(dict);
+                break;
+            case AslLexer.ACCESS: {
+                Data container = Stack.getVariable(t.getChild(0).getText()).deepClone();
+                value = accessData(t,container);
+                break;
+            }
+            case AslLexer.FROM: {
+                Data table_aux = Stack.getVariable(t.getChild(0).getText());
+                value = evaluateFromActions(table_aux,t.getChild(1));
+                break;
+            }
+
+            default: break;
+        }
+
+        // Retrieve the original line and return
+        if (value != null) {
+            return value;
+        }
+
+        // Unary operators
+        value = evaluateContextExpression(table, row_i, t.getChild(0));
+        if (t.getChildCount() == 1) {
+            switch (type) {
+                case AslLexer.PLUS:
+                    checkType("Integer", value);
+                    break;
+                case AslLexer.MINUS:
+                    checkType("Integer", value);
+                    IntegerData int_val = (IntegerData) value;
+                    int_val.setValue(-int_val.getValue());
+                    break;
+                case AslLexer.NOT:
+                    checkType("Boolean", value);
+                    BooleanData bool_val = (BooleanData) value;
+                    bool_val.setValue(!bool_val.getValue());
+                    break;
+                case AslLexer.COLUMN: {
+                    Data colData = evaluateExpression(t.getChild(0));
+                    value = table.get(row_i, colData);
+                    break;
+                }
+                default: assert false; // Should never happen
+            }
+            return value;
+        }
+
+        // Two operands
+        Data value2;
+        switch (type) {
+            // Relational operators
+            case AslLexer.EQUAL:
+            case AslLexer.NOT_EQUAL:
+            case AslLexer.LT:
+            case AslLexer.LE:
+            case AslLexer.GT:
+            case AslLexer.GE:
+                value2 = evaluateContextExpression(table, row_i, t.getChild(1));
+                if (value.getType() != value2.getType()) {
+                  throw new RuntimeException ("Incompatible types in relational expression");
+                }
+                value = value.evaluateRelational(type, value2);
+                break;
+
+            // Arithmetic operators
+            case AslLexer.PLUS:
+            case AslLexer.MINUS:
+            case AslLexer.MUL:
+            case AslLexer.DIV:
+            case AslLexer.MOD:
+                value2 = evaluateContextExpression(table, row_i, t.getChild(1));
+                value = value.evaluateArithmetic(type, value2);
+                break;
+
+            // Boolean operators
+            case AslLexer.AND:
+            case AslLexer.OR:
+                // The first operand is evaluated, but the second
+                // is deferred (lazy, short-circuit evaluation).
+                checkType("Boolean", value);
+                value = evaluateContextShortCircuit(table,row_i,type,(BooleanData)value,t.getChild(1));
+                break;
+
+            default: {
+              assert false; // Should never happen
+            }
+        }
+
+        return value;
+    }
+
+
     public Data evaluateFromActions(Data table, AslTree t) {
       assert t.getType() == AslLexer.FROM_ACTIONS;
       assert Data.isType("Table", table);
@@ -549,7 +687,9 @@ public class Interp {
     }
 
     public boolean evaluateContextBoolean(TableData table, int i, AslTree t) {
-      return true;
+      Data res = evaluateContextExpression(table, i, t);
+      checkType("Boolean", res);
+      return BooleanData.cast(res).getValue();
     }
 
     /**
@@ -582,7 +722,29 @@ public class Interp {
         // Return the value of the second expression
         Data aux = evaluateExpression(t);
         checkType("Boolean", aux);
-        return (BooleanData) v;
+        return (BooleanData) aux;
+    }
+    private Data evaluateContextShortCircuit (TableData table, int row_i, int type, BooleanData v, AslTree t) {
+        // Boolean evaluation with short-circuit
+
+        switch (type) {
+            case AslLexer.AND:
+                // Short circuit if v is false
+                if (!v.getValue()) return v;
+                break;
+
+            case AslLexer.OR:
+                // Short circuit if v is true
+                if (v.getValue()) return v;
+                break;
+
+            default: assert false;
+        }
+
+        // Return the value of the second expression
+        Data aux = evaluateContextExpression(table, row_i, t);
+        checkType("Boolean", aux);
+        return (BooleanData) aux;
     }
 
     /** Checks that the data is Type type and raises an exception if it is not. */
@@ -661,7 +823,7 @@ public class Interp {
         }
         return Params;
     }
-    
+
     private Data accessData(AslTree t, Data container){
         Data value;
         ArrayList<Data> indexes = listArguments(t.getChild(1));
@@ -672,10 +834,10 @@ public class Interp {
             j = indexes.get(dims);
             value = value.get(j);
         }
-        
+
         return value;
     }
-    
+
     private void accessDataAndAssign(AslTree t, Data container, Data value){
         Data elem;
         ArrayList<Data> indexes = listArguments(t.getChild(1));
@@ -684,7 +846,7 @@ public class Interp {
         Data parent = container;
         Data great_parent = new VoidData();
         elem = container.get(i);
-        
+
         for(int dims = 1; dims < indexes.size(); ++dims){
             great_parent = parent;
             parent = elem;
@@ -692,7 +854,7 @@ public class Interp {
             i = indexes.get(dims);
             elem = elem.get(i);
         }
-        
+
         if(parent.getType().equals("Table") && elem.getType().equals("Dict")){
             throw new RuntimeException("Cannot replace an entire row from a table");
         }

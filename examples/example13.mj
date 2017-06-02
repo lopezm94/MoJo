@@ -5,5 +5,6 @@ function main()
     add_row!(table,row)
     write_file(table,"file.out")
     table2 = read_file("file.out")
-    write(table=table2)
+    writeln(table=table2)
+    return table=table2
 end

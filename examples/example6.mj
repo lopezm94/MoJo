@@ -1,9 +1,10 @@
 function main()
-    x = 1 + 1;
-    y = x - 1;
-    if (x = 2 and y = 1)
-        write "Your instruction functions work!\n"
-    else
-        write "Check your language implementation <.<"
-    end
+    columns = ["nom","edat","professió", "residència"]
+    table = create_table(columns)
+    row = {"nom":"Juan","edat":22,"professió":"Not yet"}
+    row2 = {"nom":"Juan","edat":10,"professió":"Not yet"}
+    add_row!(table,row,row2)
+    table[0,"edat"] = 12
+    table[0,"residència"] = "Caracas"
+    write(table)
 end

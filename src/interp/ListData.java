@@ -23,13 +23,12 @@ public class ListData<T extends Data> extends Data {
       if(i>=list.size()) throw new RuntimeException("List lenght "+list.size()+" is lower than requested position "+i+"\n");
       return list.get(i);
     }
-    
     public T get(Data d){
         assert d.getType().equals("Integer");
         IntegerData i = (IntegerData) d;
         return get(i.getValue());
     }
-    
+
     public void setValue(Data d){
         ListData<Data> l2 = cast(d);
         list = (ArrayList<T>) l2.list.clone();

@@ -8,5 +8,6 @@ function main()     # Se ejecuta por defecto
     y = read_file("samples/sample2.csv")
     tmp = mergesort(x,y)
     tmp = sample(8,tmp)
-    write_file(tmp, "samples/example1.out")
+    write_file(tmp, "samples/example1.csv")
+    return num_rows(tmp) = 8
 end

@@ -2,7 +2,7 @@ function main()
     a = ["id","name","age"]
     t = create_table(a)
     if( a = column_names(t) )
-        write("Works \n")
+        write("Works %n")
     else
         write("Not working")
     end

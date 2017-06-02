@@ -216,17 +216,19 @@ public class TableData extends Data {
       types.remove(pos);
     }
 
-
     public DictData get(Data d){
       assert d.getType().equals("Integer");
       IntegerData row = (IntegerData) d;
       return get(row.getValue());
     }
-
     public Data get(int row, String col) {
       return get(row, new StringData(col));
     }
-
+    public Data get(Data d, StringData col) {
+      assert d.getType().equals("Integer");
+      IntegerData row = (IntegerData) d;
+      return get(row.getValue(), col);
+    }
     public Data get(int row, StringData col) {
       if (height() <= row)
         throw new RuntimeException("Index out of bounds: " +
@@ -234,6 +236,18 @@ public class TableData extends Data {
       if (!labels.contains(col))
         throw new RuntimeException("Column name: " + col + " doesn't exist");
       return get(row).get(col);
+    }
+    public Data get(int row, IntegerData col) {
+      StringData col_name = labels.get(col);
+      return get(row, col_name);
+    }
+    public Data get(int row, Data col) {
+      if (col.getType().equals("Integer")) {
+        return get(row, IntegerData.cast(col));
+      } else {
+        assert col.getType().equals("String");
+        return get(row, StringData.cast(col));
+      }
     }
 
     public ListData<StringData> getColumnNames(){
@@ -243,7 +257,7 @@ public class TableData extends Data {
     public void put(int row, String col, Data data) {
       put(row, new StringData(col), data);
     }
-    
+
     public void put(int row, StringData col, Data data) {
       while (height() <= row)
         addRow();
@@ -275,7 +289,7 @@ public class TableData extends Data {
       td.addRow(new DictData());
       return td;
     }
-    
+
     public TableData addRowCopy(DictData dd){
       TableData td = (TableData) deepClone();
       td.addRow(dd);
