@@ -53,6 +53,8 @@ INTERP_SRC =	$(INTERP)/Interp.java \
 				$(INTERP)/DictData.java \
 				$(INTERP)/TableData.java \
 				$(INTERP)/StringData.java \
+				$(INTERP)/ColumnData.java \
+				$(INTERP)/ColumnString.java \
 				$(INTERP)/FuncFactory.java \
 				$(INTERP)/SpecialFunc.java \
 				$(INTERP)/$(TARGET)Tree.java \
